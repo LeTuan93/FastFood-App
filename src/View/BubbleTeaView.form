@@ -1,0 +1,845 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="jPanelBubbleTeaView" alignment="0" pref="880" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="jPanelBubbleTeaView" alignment="0" pref="608" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="jPanelBubbleTeaView">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="33" green="99" red="ff" type="rgb"/>
+        </Property>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[896, 678]"/>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <EmptySpace pref="343" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jPanelContainerBubbleTeaView" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="111" max="-2" attributes="0"/>
+                          <Component id="jButtonBackBubbleTeaException1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jButtonBackBubbleTea" min="-2" pref="70" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="jPanelPaymentMethodsBubbleTea" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabelImageBubbleTeaView" min="-2" pref="299" max="-2" attributes="0"/>
+                          <Component id="jPanelListBubbleTeaView" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="243" max="32767" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Component id="jButtonBackBubbleTea" min="-2" pref="70" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jButtonBackBubbleTeaException1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Component id="jPanelContainerBubbleTeaView" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="jPanelPaymentMethodsBubbleTea" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="177" max="32767" attributes="0"/>
+              </Group>
+              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="jLabelImageBubbleTeaView" min="-2" pref="194" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jPanelListBubbleTeaView" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JButton" name="jButtonBackBubbleTeaException1">
+          <Properties>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonBackBubbleTeaException1ActionPerformed"/>
+          </Events>
+        </Component>
+        <Container class="javax.swing.JPanel" name="jPanelListBubbleTeaView">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="99" red="ff" type="rgb"/>
+            </Property>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace pref="144" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jLabelExcepiton1BubbleTeaView" min="-2" pref="198" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="120" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jButtonAddBubbleTeaView" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
+                              <Component id="jLabelSumBubbleTeaView" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabelMoneyBubbleTeaView" min="-2" pref="175" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabelVNDBubbleTeaView" min="-2" pref="43" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPaneExcepiton1BubbleTeaView" pref="613" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabelExcepiton1BubbleTeaView" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="356" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jLabelMoneyBubbleTeaView" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabelVNDBubbleTeaView" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="jButtonAddBubbleTeaView" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="jLabelSumBubbleTeaView" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                          <Component id="jScrollPaneExcepiton1BubbleTeaView" min="-2" pref="330" max="-2" attributes="0"/>
+                          <EmptySpace pref="68" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="jLabelExcepiton1BubbleTeaView">
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabelSumBubbleTeaView">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="14" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="T&#x1ed5;ng:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabelMoneyBubbleTeaView">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="0"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
+                    <BevelBorder/>
+                  </Border>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabelVNDBubbleTeaView">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="VN&#x110;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonAddBubbleTeaView">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Century Gothic" size="14" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Th&#xea;m"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAddBubbleTeaViewActionPerformed"/>
+              </Events>
+            </Component>
+            <Container class="javax.swing.JScrollPane" name="jScrollPaneExcepiton1BubbleTeaView">
+              <AuxValues>
+                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="jTableMenuOfBubbleTea">
+                  <Properties>
+                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                      <Table columnCount="4" rowCount="50">
+                        <Column editable="false" title="S&#x1ed1; th&#x1ee9; t&#x1ef1;" type="java.lang.String">
+                          <Data value="1"/>
+                          <Data value="2"/>
+                          <Data value="3"/>
+                          <Data value="4"/>
+                          <Data value="5"/>
+                          <Data value="6"/>
+                          <Data value="7"/>
+                          <Data value="8"/>
+                          <Data value="9"/>
+                          <Data value="10"/>
+                          <Data value="11"/>
+                          <Data value="12"/>
+                          <Data value="13"/>
+                          <Data value="14"/>
+                          <Data value="15"/>
+                          <Data value="16"/>
+                          <Data value="17"/>
+                          <Data value="18"/>
+                          <Data value="19"/>
+                          <Data value="20"/>
+                          <Data value="21"/>
+                          <Data value="22"/>
+                          <Data value="23"/>
+                          <Data value="24"/>
+                          <Data value="25"/>
+                          <Data value="26"/>
+                          <Data value="27"/>
+                          <Data value="28"/>
+                          <Data value="29"/>
+                          <Data value="30"/>
+                          <Data value="31"/>
+                          <Data value="32"/>
+                          <Data value="33"/>
+                          <Data value="34"/>
+                          <Data value="35"/>
+                          <Data value="36"/>
+                          <Data value="37"/>
+                          <Data value="38"/>
+                          <Data value="39"/>
+                          <Data value="40"/>
+                          <Data value="41"/>
+                          <Data value="42"/>
+                          <Data value="43"/>
+                          <Data value="44"/>
+                          <Data value="45"/>
+                          <Data value="46"/>
+                          <Data value="47"/>
+                          <Data value="48"/>
+                          <Data value="49"/>
+                          <Data value="50"/>
+                        </Column>
+                        <Column editable="false" title="T&#xea;n" type="java.lang.String">
+                          <Data value="Super Sundae Tr&#xe2;n Ch&#xe2;u &#x110;&#x1b0;&#x1edd;ng &#x110;en"/>
+                          <Data value="SUPER SUNDAE XO&#xc0;I"/>
+                          <Data value="SUPER SUNDAE SOCOLA"/>
+                          <Data value="S&#x1eee;A KEM L&#x1eae;C &#x110;&#xc0;O"/>
+                          <Data value="SUPER SUNDAE D&#xc2;U T&#xc2;Y"/>
+                          <Data value="H&#x1ed3;ng Tr&#xe0; Kem"/>
+                          <Data value="S&#x1eef;a Kem L&#x1eaf;c D&#xe2;u T&#xe2;y"/>
+                          <Data value="Super Sundae L&#xf4; H&#x1ed9;i"/>
+                          <Data value="TR&#xc0; KEM B&#x1ed0;N M&#xd9;A"/>
+                          <Data value="D&#x1b0;&#x1a1;ng Chi Cam L&#x1ed9;"/>
+                          <Data value="Tr&#xe0; &#x110;&#xe0;o Big Size"/>
+                          <Data value="TR&#xc0; &#x110;&#xc0;O B&#x1ed0;N M&#xd9;A"/>
+                          <Data value="N&#x1b0;&#x1edb;c Chanh T&#x1b0;&#x1a1;i L&#x1ea1;nh"/>
+                          <Data value="Tr&#xe0; Chanh L&#xf4; H&#x1ed9;i"/>
+                          <Data value="H&#x1ed3;ng Tr&#xe0; M&#x1ead;t Ong"/>
+                          <Data value="H&#x1ed3;ng Tr&#xe0; Chanh"/>
+                          <Data value="Tr&#xe0; &#x110;&#xe0;o T&#x1ee9; K&#x1ef3; Xu&#xe2;n"/>
+                          <Data value="TR&#xc0; &#xd4; LONG B&#x1ed0;N M&#xd9;A"/>
+                          <Data value="Tr&#xe0; S&#x1eef;a N&#x1b0;&#x1edb;ng"/>
+                          <Data value="Tr&#xe0; S&#x1eef;a Tr&#xe2;n Ch&#xe2;u &#x110;&#x1b0;&#x1edd;ng &#x110;en"/>
+                          <Data value="Tr&#xe0; S&#x1eef;a Tr&#xe2;n Ch&#xe2;u"/>
+                          <Data value="Tr&#xe0; s&#x1eef;a b&#xe1; v&#x1b0;&#x1a1;ng"/>
+                          <Data value="Tr&#xe0; S&#x1eef;a 3Q"/>
+                          <Data value="Tr&#xe0; S&#x1eef;a Th&#x1ea1;ch D&#x1eeb;a"/>
+                          <Data value="Tr&#xe0; S&#x1eef;a 2J"/>
+                          <Data value="Tr&#xe0; S&#x1eef;a S&#x1ea7;u Ri&#xea;ng"/>
+                          <Data value="Tr&#xe0; S&#x1eef;a B&#x1a1;"/>
+                          <Data value="Tr&#xe0; s&#x1eef;a kem tr&#x1ee9;ng &#x111;&#x1eb7;c bi&#x1ec7;t"/>
+                          <Data value="Tr&#xe0; s&#x1eef;a ph&#xf4; mai t&#x1b0;&#x1a1;i"/>
+                          <Data value="Tr&#xe0; s&#x1eef;a Hong Kong"/>
+                          <Data value="Tr&#xe0; s&#x1eef;a socola"/>
+                          <Data value="Tr&#xe0; s&#x1eef;a L&#xe0;i Shan Tuy&#x1ebf;t"/>
+                          <Data value="Tr&#xe0; S&#x1eef;a Ki&#x1ec1;u M&#x1ea1;ch"/>
+                          <Data value="Tr&#xe0; s&#x1eef;a Cheese Ball"/>
+                          <Data value="Tr&#xe0; s&#x1eef;a kem tr&#x1ee9;ng &#x111;&#x1eb7;c bi&#x1ec7;t tr&#xe2;n ch&#xe2;u &#x111;&#x1b0;&#x1edd;ng &#x111;en"/>
+                          <Data value="Tr&#xe0; S&#x1eef;a Tr&#xe2;n Ch&#xe2;u Tr&#x1eaf;ng"/>
+                          <Data value="Tr&#xe0; s&#x1eef;a khoai m&#xf4;n t&#x1b0;&#x1a1;i"/>
+                          <Data value="H&#x1ed3;ng Tr&#xe0; Nh&#x1ead;t Nguy&#x1ec7;t"/>
+                          <Data value="Tr&#xe0; Shan Tuy&#x1ebf;t L&#xe0;i"/>
+                          <Data value="Tr&#xe0; &#x1ed4;i H&#x1ed3;ng"/>
+                          <Data value="Tr&#xe0; V&#x1ea3;i T&#x1b0;&#x1a1;i"/>
+                          <Data value="Tr&#xe0; &#x110;&#xe0;o H&#x1ed3;ng"/>
+                          <Data value="Tr&#xe0; Oolong Tuy&#x1ebf;t S&#x1a1;n"/>
+                          <Data value="S&#x1eef;a t&#x1b0;&#x1a1;i s&#x1b0;&#x1a1;ng s&#xe1;o th&#x1ea3;o m&#x1ed9;c &#x111;&#x1b0;&#x1edd;ng &#x111;en"/>
+                          <Data value="S&#x1eef;a t&#x1b0;&#x1a1;i hoa h&#x1ed3;ng tr&#xe2;n ch&#xe2;u &#x111;&#x1b0;&#x1edd;ng &#x111;en"/>
+                          <Data value="S&#x1eef;a t&#x1b0;&#x1a1;i tr&#x1ee9;ng ho&#xe0;ng kim"/>
+                          <Data value="S&#x1eef;a t&#x1b0;&#x1a1;i cacao s&#x1eef;a tr&#xe2;n ch&#xe2;u &#x111;&#x1b0;&#x1edd;ng &#x111;en"/>
+                          <Data value="S&#x1eef;a t&#x1b0;&#x1a1;i kem tr&#x1ee9;ng &#x111;&#x1b0;&#x1edd;ng &#x111;en"/>
+                          <Data value="S&#x1eef;a t&#x1b0;&#x1a1;i kem tr&#x1ee9;ng tr&#xe2;n ch&#xe2;u &#x111;&#x1b0;&#x1edd;ng &#x111;en"/>
+                          <Data value="S&#x1eef;a t&#x1b0;&#x1a1;i matcha s&#x1eef;a tr&#xe2;n ch&#xe2;u &#x111;&#x1b0;&#x1edd;ng &#x111;en"/>
+                        </Column>
+                        <Column editable="false" title="Gi&#xe1; (VN&#x110;)" type="java.lang.String">
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="35,000"/>
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="20,000"/>
+                          <Data value="20,000"/>
+                          <Data value="20,000"/>
+                          <Data value="22,000"/>
+                          <Data value="25,000"/>
+                          <Data value="20,000"/>
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="30,000"/>
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="25,000"/>
+                          <Data value="28,000"/>
+                          <Data value="24,000"/>
+                          <Data value="24,000"/>
+                          <Data value="22,000"/>
+                          <Data value="22,000"/>
+                          <Data value="22,000"/>
+                          <Data value="22,000"/>
+                          <Data value="24,000"/>
+                          <Data value="27,000"/>
+                          <Data value="24,000"/>
+                          <Data value="24,000"/>
+                          <Data value="16,000"/>
+                          <Data value="16,000"/>
+                          <Data value="27,000"/>
+                          <Data value="27,000"/>
+                          <Data value="27,000"/>
+                          <Data value="16,000"/>
+                          <Data value="27,000"/>
+                          <Data value="32,000"/>
+                          <Data value="32,000"/>
+                          <Data value="32,000"/>
+                          <Data value="27,000"/>
+                          <Data value="32,000"/>
+                          <Data value="32,000"/>
+                        </Column>
+                        <Column editable="true" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng" type="java.lang.Integer">
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                          <Data value="0"/>
+                        </Column>
+                      </Table>
+                    </Property>
+                    <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                      <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="350" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                      </TableColumnModel>
+                    </Property>
+                    <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                      <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                    </Property>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+          </SubComponents>
+        </Container>
+        <Component class="javax.swing.JLabel" name="jLabelImageBubbleTeaView">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="C:\Users\min\Documents\NetBeansProjects\tester\src\Image\BubbleTeaView.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="jLabel1"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="jButtonBackBubbleTea">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="99" red="ff" type="rgb"/>
+            </Property>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="C:\Users\min\Documents\NetBeansProjects\tester\src\Image\icons8-back-64.png"/>
+            </Property>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonBackBubbleTeaActionPerformed"/>
+          </Events>
+        </Component>
+        <Container class="javax.swing.JPanel" name="jPanelPaymentMethodsBubbleTea">
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabelPaymentMethodsBubbleTeaView" min="-2" pref="205" max="-2" attributes="0"/>
+                              <EmptySpace pref="11" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jButtonPayWithQRCodeBubbleTeaView" min="-2" pref="130" max="-2" attributes="0"/>
+                                  <Component id="jButtonPayInCashBubbleTeaView" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                      <Component id="jLabelPaymentMethodsBubbleTeaView" pref="49" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButtonPayInCashBubbleTeaView" min="-2" pref="54" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jButtonPayWithQRCodeBubbleTeaView" min="-2" pref="50" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JButton" name="jButtonPayWithQRCodeBubbleTeaView">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="ff" red="33" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Qu&#xe9;t m&#xe3; QR"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonPayWithQRCodeBubbleTeaViewActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButtonPayInCashBubbleTeaView">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="0" green="ff" red="66" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="S&#x1eed; d&#x1ee5;ng ti&#x1ec1;n m&#x1eb7;t"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabelPaymentMethodsBubbleTeaView">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="14" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="      Ph&#x1b0;&#x1a1;ng th&#x1ee9;c thanh to&#xe1;n"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="jPanelContainerBubbleTeaView">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="33" green="99" red="ff" type="rgb"/>
+            </Property>
+          </Properties>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jPaneContainStarBubbleTeaView" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabelPositionBubbleTeaView" alignment="0" min="-2" pref="301" max="-2" attributes="0"/>
+                                  <Component id="jButtonFavoriteBubbleTeaView" alignment="0" min="-2" pref="123" max="-2" attributes="0"/>
+                                  <Component id="jPanelHourOpenBubbleTeaView" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jPanelExcepiton1BubbleTeaView" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jTextFieldNameBubbleTeaView" alignment="0" min="-2" pref="225" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="0" pref="37" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace pref="12" max="32767" attributes="0"/>
+                      <Component id="jButtonFavoriteBubbleTeaView" min="-2" pref="25" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <Component id="jTextFieldNameBubbleTeaView" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabelPositionBubbleTeaView" min="-2" pref="20" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jPaneContainStarBubbleTeaView" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                      <Component id="jPanelExcepiton1BubbleTeaView" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jPanelHourOpenBubbleTeaView" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JButton" name="jButtonFavoriteBubbleTeaView">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="33" green="0" red="ff" type="rgb"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="C:\Users\min\Documents\NetBeansProjects\tester\src\Image\Favorite.png"/>
+                </Property>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonFavoriteBubbleTeaViewActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabelPositionBubbleTeaView">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="33" green="99" red="ff" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="14" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="&#x110;&#x1ecb;a &#x111;i&#x1ec3;m: ao sen ng&#xf5; s&#x1ed1; 2"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="jTextFieldNameBubbleTeaView">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="33" green="99" red="ff" type="rgb"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Arial" size="14" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Tocotoco Bubble Tea - V&#x1b0;&#x1edd;n L&#xe0;i"/>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="null"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldNameBubbleTeaViewActionPerformed"/>
+              </Events>
+            </Component>
+            <Container class="javax.swing.JPanel" name="jPaneContainStarBubbleTeaView">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="33" green="99" red="ff" type="rgb"/>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabelStar1BubbleTeaView" min="-2" pref="31" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabelStar2BubbleTeaView" min="-2" pref="31" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabelStar3BubbleTeaView" min="-2" pref="31" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabelStar4BubbleTeaView" min="-2" pref="31" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabelStar5BubbleTeaView" min="-2" pref="33" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                                  <Component id="jLabelStar1BubbleTeaView" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                                  <Component id="jLabelStar2BubbleTeaView" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                                  <Component id="jLabelStar3BubbleTeaView" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                                  <Component id="jLabelStar4BubbleTeaView" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="jLabelStar5BubbleTeaView" alignment="1" min="-2" pref="24" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="jLabelStar1BubbleTeaView">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="0" green="66" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="2" name="C:\Users\min\Documents\NetBeansProjects\tester\src\Image\icons8-star-48.png"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabelStar2BubbleTeaView">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="0" green="66" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="2" name="C:\Users\min\Documents\NetBeansProjects\tester\src\Image\icons8-star-48.png"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabelStar3BubbleTeaView">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="0" green="66" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="2" name="C:\Users\min\Documents\NetBeansProjects\tester\src\Image\icons8-star-48.png"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabelStar4BubbleTeaView">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="0" green="66" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="2" name="C:\Users\min\Documents\NetBeansProjects\tester\src\Image\icons8-star-48.png"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabelStar5BubbleTeaView">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="0" green="66" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="2" name="C:\Users\min\Documents\NetBeansProjects\tester\src\Image\icons8-star-48.png"/>
+                    </Property>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="jPanelExcepiton1BubbleTeaView">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="33" green="99" red="ff" type="rgb"/>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabelGreenDotBubbleTeaView" min="-2" pref="24" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabelTimeOpenBubbleTeaView" min="-2" pref="154" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="47" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabelGreenDotBubbleTeaView" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jLabelTimeOpenBubbleTeaView" alignment="0" max="32767" attributes="0"/>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="jLabelGreenDotBubbleTeaView">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="0" green="66" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="2" name="C:\Users\min\Documents\NetBeansProjects\tester\src\Image\icons8-green-circle-48.png"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabelTimeOpenBubbleTeaView">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="0" green="66" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="14" style="0"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="M&#x1edf; c&#x1eed;a 9a.m - 8p.m "/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="jPanelHourOpenBubbleTeaView">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="33" green="99" red="ff" type="rgb"/>
+                </Property>
+              </Properties>
+
+              <Layout>
+                <DimensionLayout dim="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabelHourOpenBubbleTea" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabelUpToBubbleTeaView" min="-2" pref="155" max="-2" attributes="0"/>
+                          <EmptySpace pref="23" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                </DimensionLayout>
+                <DimensionLayout dim="1">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jLabelHourOpenBubbleTea" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jLabelUpToBubbleTeaView" alignment="1" max="32767" attributes="0"/>
+                  </Group>
+                </DimensionLayout>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JLabel" name="jLabelHourOpenBubbleTea">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="2" name="C:\Users\min\Documents\NetBeansProjects\tester\src\Image\icons8-coins-64.png"/>
+                    </Property>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabelUpToBubbleTeaView">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="14" style="0"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="15,000 - 35,000 VN&#x110;"/>
+                  </Properties>
+                </Component>
+              </SubComponents>
+            </Container>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>
