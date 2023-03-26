@@ -12,13 +12,25 @@ import Controller.MainListener;
 import Controller.PizzaListener;
 import Controller.SignInGUIListener;
 import Controller.SignUpGUIListener;
+import Model.SignUpModel;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
@@ -27,9 +39,11 @@ import javax.swing.JTextField;
 
 public class Manager {
     
+    //public static ArrayList 
+    
     //Variables JFrameMain
     public static JFrame jFrameMain;
-
+    
     ///Variables check
     public static int checkSignInFromSignUp =0;
     public static int checkBeer = 0;
@@ -62,8 +76,8 @@ public class Manager {
     private JSeparator jSeparator1;
     private JSeparator jSeparator6;
     private JLabel passWordLabel;
-    private JTextField textFieldEmailLogin;
-    private JPasswordField textFieldPassWord;
+    private  JTextField textFieldEmailLogin;
+    private  JPasswordField textFieldPassWord;
     // End of variables declaration  
     
     // Variables of SignUpGUI                
@@ -423,6 +437,7 @@ public class Manager {
     // End of variables declaration  
     
     public Manager(){
+        writeAccountFromFile();
         init();
     }
     
@@ -441,7 +456,6 @@ public class Manager {
         int x = (int) (center.getX() - jFrameMain.getWidth() / 2);
         int y = (int) (center.getY() - jFrameMain.getHeight() / 2-50);
         jFrameMain.setLocation(x, y);
-        
         BubbleTeaView();
         DealHotTodayView();
         BeerView();
@@ -497,17 +511,17 @@ public class Manager {
         jButtonSignUpHere.setForeground(new java.awt.Color(0, 255, 255));
         jButtonSignUpHere.setText("Sign up here");
         jButtonSignUpHere.setBorder(null);
-        jButtonSignUpHere.addActionListener(new SignInGUIListener());
+        jButtonSignUpHere.addActionListener(new SignInGUIListener(this));
 
         jButtonLogin.setBackground(new java.awt.Color(153, 51, 255));
         jButtonLogin.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jButtonLogin.setForeground(new java.awt.Color(255, 255, 255));
         jButtonLogin.setText("Login");
-        jButtonLogin.addActionListener(new SignInGUIListener());
+        jButtonLogin.addActionListener(new SignInGUIListener(this));
 
         textFieldEmailLogin.setBorder(null);
         textFieldEmailLogin.setCaretColor(new java.awt.Color(140, 140, 140));
-        textFieldEmailLogin.addActionListener(new SignInGUIListener());
+        textFieldEmailLogin.addActionListener(new SignInGUIListener(this));
 
         jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-delivery-man-64.png")); // NOI18N
 
@@ -527,7 +541,7 @@ public class Manager {
         jButtonForgotPassWord.setForeground(new java.awt.Color(51, 51, 51));
         jButtonForgotPassWord.setText("Forgot your password?");
         jButtonForgotPassWord.setBorder(null);
-        jButtonForgotPassWord.addActionListener(new SignInGUIListener());
+        jButtonForgotPassWord.addActionListener(new SignInGUIListener(this));
 
         jLabel3.setForeground(new java.awt.Color(102, 102, 102));
         jLabel3.setText("Don't have an account?");
@@ -668,7 +682,7 @@ public class Manager {
         jButtonSignUp.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jButtonSignUp.setForeground(new java.awt.Color(255, 255, 255));
         jButtonSignUp.setText("Sign Up");
-        jButtonSignUp.addActionListener(new SignUpGUIListener());
+        jButtonSignUp.addActionListener(new SignUpGUIListener(this));
 
         jLabelAreadyAMember.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jLabelAreadyAMember.setText("Already a member");
@@ -695,7 +709,7 @@ public class Manager {
 
         jButtonBackSignUp.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-back-64.png")); // NOI18N
         jButtonBackSignUp.setBorder(null);
-        jButtonBackSignUp.addActionListener(new SignUpGUIListener());
+        jButtonBackSignUp.addActionListener(new SignUpGUIListener(this));
 
         jLabelFastFood.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabelFastFood.setForeground(new java.awt.Color(255, 51, 0));
@@ -4403,4 +4417,91 @@ public class Manager {
                     .addGap(36, 36, 36)))
         );
     }
+    public static  List<SignUpModel> signUpModel = new ArrayList<>();
+    private int id=0;  
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^((?!\\.)[\\w_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$", Pattern.CASE_INSENSITIVE);
+    public static final Pattern VALID_PASSWORD_REGEX = Pattern.compile("^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{6,})\\S$");
+    public static final Pattern VALID_FULLNAME_REGEX = Pattern.compile("^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$");
+    public void addAccount(){
+        int checkExistAccount=0;
+        for (SignUpModel account: signUpModel ){
+            if (account.getEmail().equals(jTextFieldEmail.getText())){
+                checkExistAccount=1;
+            }
+        }
+        if (VALID_EMAIL_ADDRESS_REGEX.matcher(jTextFieldEmail.getText()).find() && VALID_PASSWORD_REGEX.matcher(jTextFieldPassWord.getText()).find() && VALID_FULLNAME_REGEX.matcher(jTextFieldFullName.getText()).find() && checkExistAccount==0){
+            id++;
+            SignUpModel newAccount = new SignUpModel(id,jTextFieldFullName.getText(),jTextFieldEmail.getText(),jTextFieldPassWord.getText());
+            signUpModel.add(newAccount);
+            System.out.print(newAccount);
+            JOptionPane.showMessageDialog(jFrameMain,"Đăng ký thành công!","Accept",JOptionPane.INFORMATION_MESSAGE);
+        }
+        else {
+            if (VALID_FULLNAME_REGEX.matcher(jTextFieldFullName.getText()).find()==false){
+                JOptionPane.showMessageDialog(jFrameMain,"Sai định dạng tên!","Error",JOptionPane.ERROR_MESSAGE);
+            } else if (VALID_EMAIL_ADDRESS_REGEX.matcher(jTextFieldEmail.getText()).find()==false){
+                JOptionPane.showMessageDialog(jFrameMain,"Sai định dạng email!","Error",JOptionPane.ERROR_MESSAGE);
+            } else if (VALID_PASSWORD_REGEX.matcher(jTextFieldPassWord.getText()).find()==false){
+                JOptionPane.showMessageDialog(jFrameMain,"Sai định dạng mật khẩu!","Error",JOptionPane.ERROR_MESSAGE);
+            } else if (checkExistAccount == 1){
+                JOptionPane.showMessageDialog(jFrameMain,"Email đã được sử dụng, vui lòng chọn email khác!","Error",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    public void writeAccountInToFile(){
+        try{
+            File file = new File("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\File\\AccountManager");
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            OutputStream os = new FileOutputStream(file);
+            ObjectOutputStream oos = new ObjectOutputStream(os); 
+            
+            for (SignUpModel account : signUpModel){
+                oos.writeObject(account);
+            }
+           
+            oos.flush();
+            oos.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void writeAccountFromFile(){
+        try{
+            File file = new File("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\File\\AccountManager");
+            if(!file.exists()){
+                file.createNewFile();
+            }
+            InputStream is = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(is); 
+            SignUpModel account = null;
+            while (true){
+                Object oj = ois.readObject();
+                if (oj==null){
+                    break;
+                }
+                if (oj!= null){
+                    account = (SignUpModel) oj;
+                    signUpModel.add(account);
+                    id=account.getIdTrace();
+                    System.out.println(account);
+                }
+            }
+            ois.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public boolean loggedInSuccessfully() {
+        for (SignUpModel account: signUpModel ){
+            System.out.print(textFieldEmailLogin.getText());
+            char[] p = jPasswordField.getPassword();
+            String password = new String(p);
+            if (account.getEmail().equals(textFieldEmailLogin.getText()) && account.getPassWord().equals(password)){
+                return true;
+            }
+        }
+        return false;
+    } 
 }

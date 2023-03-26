@@ -54,5 +54,6 @@ public class Test {
         initLookAndFeel();
         JFrame.setDefaultLookAndFeelDecorated(true);
         new Manager();
+        
     }
 }

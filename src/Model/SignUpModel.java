@@ -1,18 +1,29 @@
 package Model;
 
-public class SignUpModel {
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.Serializable;
+
+public class SignUpModel implements Serializable{
+
+
+    private int idTrace;
     private String fullName;
     private String email;
     private String passWord;
     
-    public SignUpModel(String fullName, String email, String passWord) {
+    public SignUpModel(int idTrace,String fullName, String email, String passWord) {
+        this.idTrace= idTrace;
         this.fullName = fullName;
         this.email = email;
         this.passWord = passWord;
     }
     
     public String getFullName() {
-        return fullName;
+        return this.fullName;
     }
 
     public void setFullName(String fullName) {
@@ -20,7 +31,7 @@ public class SignUpModel {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -28,10 +39,23 @@ public class SignUpModel {
     }
 
     public String getPassWord() {
-        return passWord;
+        return this.passWord;
     }
 
     public void setPassWord(String passWord) {
         this.passWord = passWord;
+    }
+    
+    public int getIdTrace() {
+        return this.idTrace;
+    }
+
+    public void setIdTrace(int idTrace) {
+        this.idTrace = idTrace;
+    }
+    
+        @Override
+    public String toString() {
+        return "SignUpModel{" + "idTrace=" + idTrace + ", fullName=" + fullName + ", email=" + email + ", passWord=" + passWord + '}';
     }
 }
