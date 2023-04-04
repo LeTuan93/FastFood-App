@@ -1,22 +1,31 @@
 package View;
 
 import Controller.BeerListener;
+import Controller.BillListener;
 import Controller.BreadListener;
 import Controller.BubbleTeaListener;
+import Controller.CartListener;
 import Controller.CoffeeListener;
 import Controller.DealHotTodayListener;
+import Controller.DiscountCodeViewListener;
 import Controller.HamburgerListener;
+import Controller.ButtonBelowListener;
 import Controller.HotdogListener;
 import Controller.KFCListener;
 import Controller.MainListener;
 import Controller.PizzaListener;
 import Controller.SignInGUIListener;
 import Controller.SignUpGUIListener;
+import Controller.UnderMaintaintenanceListener;
+import Controller.UserListener;
+import Model.DiscountCodeModel;
 import Model.SignUpModel;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,8 +33,13 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,15 +48,52 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.StyledEditorKit;
 
 
 public class Manager {
     
     //public static ArrayList 
+    public static List<DiscountCodeModel> discountCode =  new ArrayList<>();
+    
+    //sum
+    public static long sumMoney=0;
+    public static long sumMoneyBeer=0;
+    public static long sumMoneyBread=0;
+    public static long sumMoneyBubbleTea=0;
+    public static long sumMoneyCoffee=0;
+    public static long sumMoneyHamburger=0;
+    public static long sumMoneyHotdog=0;
+    public static long sumMoneyKFC=0;
+    public static long sumMoneyPizza=0;
+    
+    //So luong do trong invoice
+    public static int numberInBill=0;
+    public static int numberBeerInBill=0;
+    public static int numberBreadInBill=0;
+    public static int numberBubbleTeaInBill=0;
+    public static int numberCoffeeInBill=0;
+    public static int numberHamburgerInBill=0;
+    public static int numberHotdogInBill=0;
+    public static int numberKFCInBill=0;
+    public static int numberPizzaInBill=0;
+    
+    //String update invoice
+    private String footerBill="";
+    
+    //Variables checkPayedorNot;
+    public static int checkPayedorNotQR=0;
+    public static int checkPayedorNotInCash=0;
     
     //Variables JFrameMain
     public static JFrame jFrameMain;
+    
+    //Check go from CartView to Bill or from Main to Bill
+    public static int checkCartViewOrMainView=0;
     
     ///Variables check
     public static int checkSignInFromSignUp =0;
@@ -55,6 +106,36 @@ public class Manager {
     public static int checkHotdog = 0;
     public static int checkKFC = 0;
     public static int checkPizza = 0;
+    public static int checkDiscountCode =0;
+    public static int checkCart =0;
+    public static int checkBill=0;
+    public static int checkCollection=0;
+    public static int checkFreeshipXtra=0;
+    public static int checkCategory=0;
+    public static int checkUser=0;
+    
+    //Variables write to bill
+    public static String beerWriteBill="";
+    public static String breadWriteBill="";
+    public static String bubbleTeaWriteBill="";
+    public static String coffeeWriteBill="";
+    public static String hamburgerWriteBill="";
+    public static String hotdogWriteBill="";
+    public static String kfcWriteBill="";
+    public static String pizzaWriteBill="";
+    
+    
+    //Variables using for textarea of likeUserView
+    public static String shopBeerThatLiked="";
+    public static String shopBreadThatLiked="";
+    public static String shopBubbleTeaThatLiked="";
+    public static String shopCoffeeThatLiked="";
+    public static String shopHamburgerThatLiked="";
+    public static String shopHotdogThatLiked="";
+    public static String shopKFCThatLiked="";
+    public static String shopPizzaThatLiked="";
+    
+    
     
     //Variables lưu tk và mk
     //List<Manager> mng = ArrayList
@@ -146,7 +227,8 @@ public class Manager {
     private javax.swing.JPanel jPanelFooter;
     private javax.swing.JPanel jPanelMainBody;
     public static JPanel jPanelMainView;
-    private javax.swing.JTextField jTextFieldPosition;
+    public static javax.swing.JLabel jLabelHelloMainView;
+    javax.swing.JTextField jTextFieldPosition;
     // End of variables declaration          
     
     
@@ -161,7 +243,7 @@ public class Manager {
     private javax.swing.JLabel jLabelGreenDotHamburger;
     private javax.swing.JLabel jLabelHourOpenHamburger;
     private javax.swing.JLabel jLabelImageHamburgerView;
-    private javax.swing.JLabel jLabelMoneyHamburgerView;
+    public javax.swing.JLabel jLabelMoneyHamburgerView;
     private javax.swing.JLabel jLabelPaymentMethodsHamburgerView;
     private javax.swing.JLabel jLabelPositionHamburgerView;
     private javax.swing.JLabel jLabelStar1HamburgerView;
@@ -180,8 +262,8 @@ public class Manager {
     private javax.swing.JPanel jPanelListHamburgerView;
     private javax.swing.JPanel jPanelPaymentMethodsHamburgerView;
     private javax.swing.JScrollPane jScrollPaneExcepton1HamburgerView;
-    private javax.swing.JTable jTableMenuOfHamburger;
-    private javax.swing.JTextField jTextFieldNameHamburgerView; 
+    public javax.swing.JTable jTableMenuOfHamburger;
+    public javax.swing.JTextField jTextFieldNameHamburgerView; 
     // End of variables declaration 
     
     // Variables of PizzaView                     
@@ -195,7 +277,7 @@ public class Manager {
     private javax.swing.JLabel jLabelGreenDotPizza;
     private javax.swing.JLabel jLabelHourOpenPizza;
     private javax.swing.JLabel jLabelImagePizzaView;
-    private javax.swing.JLabel jLabelMoneyPizzaView;
+    public javax.swing.JLabel jLabelMoneyPizzaView;
     private javax.swing.JLabel jLabelPaymentMethodsPizzaView;
     private javax.swing.JLabel jLabelPositionPizzaView;
     private javax.swing.JLabel jLabelStar1PizzaView;
@@ -212,8 +294,8 @@ public class Manager {
     private javax.swing.JPanel jPanelPaymentMethodsPizzaView;
     public static JPanel jPanelPizzaView;
     private javax.swing.JScrollPane jScrollPaneException1PizzaView;
-    private javax.swing.JTable jTableMenuOfPizza;
-    private javax.swing.JTextField jTextFieldNamePizzaView;
+    public javax.swing.JTable jTableMenuOfPizza;
+    public javax.swing.JTextField jTextFieldNamePizzaView;
     // End of variables declaration
     
     // Variables of KFCView                    
@@ -226,7 +308,7 @@ public class Manager {
     private javax.swing.JLabel jLabelGreenDotKFC;
     private javax.swing.JLabel jLabelHourOpenKFC;
     private javax.swing.JLabel jLabelImageKFCView;
-    private javax.swing.JLabel jLabelMoneyKFCView;
+    public javax.swing.JLabel jLabelMoneyKFCView;
     private javax.swing.JLabel jLabelPaymentMethodsKFCView;
     private javax.swing.JLabel jLabelPositionKFCView;
     private javax.swing.JLabel jLabelStar1KFCView;
@@ -245,8 +327,8 @@ public class Manager {
     private javax.swing.JPanel jPanelListKFCView;
     private javax.swing.JPanel jPanelPaymentMethodsKFCView;
     private javax.swing.JScrollPane jScrollPaneException1KFCView;
-    private javax.swing.JTable jTableMenuOfKFC;
-    private javax.swing.JTextField jTextFieldNameKFCView;
+    public javax.swing.JTable jTableMenuOfKFC;
+    public javax.swing.JTextField jTextFieldNameKFCView;
     // End of variables declaration  
     
     // Variables of HotdogView                   
@@ -259,7 +341,7 @@ public class Manager {
     private javax.swing.JLabel jLabelGreenDotHotdog;
     private javax.swing.JLabel jLabelHourOpenHotdog;
     private javax.swing.JLabel jLabelImageHotdogView;
-    private javax.swing.JLabel jLabelMoneyHotdogView;
+    public javax.swing.JLabel jLabelMoneyHotdogView;
     private javax.swing.JLabel jLabelPaymentMethodsHotdogView;
     private javax.swing.JLabel jLabelPositionHotdogView;
     private javax.swing.JLabel jLabelStar1HotdogView;
@@ -279,8 +361,8 @@ public class Manager {
     private javax.swing.JPanel jPanelListHotdogView;
     private javax.swing.JPanel jPanelPaymentMethodsHotdogView;
     private javax.swing.JScrollPane jScrollPaneException1HotdogView;
-    private javax.swing.JTable jTableMenuOfHotdog;
-    private javax.swing.JTextField jTextFieldNameHotdogView;
+    public javax.swing.JTable jTableMenuOfHotdog;
+    public javax.swing.JTextField jTextFieldNameHotdogView;
     // End of variables declaration 
     
                        
@@ -309,7 +391,7 @@ public class Manager {
     private javax.swing.JLabel jLabelGreenDotCoffee;
     private javax.swing.JLabel jLabelHourOpenCoffee;
     private javax.swing.JLabel jLabelImageCoffeeView;
-    private javax.swing.JLabel jLabelMoneyCoffeeView;
+    public javax.swing.JLabel jLabelMoneyCoffeeView;
     private javax.swing.JLabel jLabelPaymentMethodsCoffeeView;
     private javax.swing.JLabel jLabelPositionCoffeeView;
     private javax.swing.JLabel jLabelStar1CoffeeView;
@@ -328,8 +410,8 @@ public class Manager {
     private javax.swing.JPanel jPanelListCoffeeView;
     private javax.swing.JPanel jPanelPaymentMethodsCoffeeView;
     private javax.swing.JScrollPane jScrollPaneException1CoffeeView;
-    private javax.swing.JTable jTableMenuOfCoffee;
-    private javax.swing.JTextField jTextFieldNameCoffeeView;
+    public javax.swing.JTable jTableMenuOfCoffee;
+    public javax.swing.JTextField jTextFieldNameCoffeeView;
     // End of variables declaration  
     
     
@@ -344,7 +426,7 @@ public class Manager {
     private javax.swing.JLabel jLabelGreenDotBubbleTeaView;
     private javax.swing.JLabel jLabelHourOpenBubbleTea;
     private javax.swing.JLabel jLabelImageBubbleTeaView;
-    private javax.swing.JLabel jLabelMoneyBubbleTeaView;
+    public javax.swing.JLabel jLabelMoneyBubbleTeaView;
     private javax.swing.JLabel jLabelPaymentMethodsBubbleTeaView;
     private javax.swing.JLabel jLabelPositionBubbleTeaView;
     private javax.swing.JLabel jLabelStar1BubbleTeaView;
@@ -364,8 +446,8 @@ public class Manager {
     private javax.swing.JPanel jPanelListBubbleTeaView;
     private javax.swing.JPanel jPanelPaymentMethodsBubbleTea;
     private javax.swing.JScrollPane jScrollPaneExcepiton1BubbleTeaView;
-    private javax.swing.JTable jTableMenuOfBubbleTea;
-    private javax.swing.JTextField jTextFieldNameBubbleTeaView;
+    public javax.swing.JTable jTableMenuOfBubbleTea;
+    public javax.swing.JTextField jTextFieldNameBubbleTeaView;
     // End of variables declaration  
     
         // Variables of BreadView                    
@@ -379,7 +461,7 @@ public class Manager {
     private javax.swing.JLabel jLabelGreenDotBread;
     private javax.swing.JLabel jLabelHourOpenBread;
     private javax.swing.JLabel jLabelImageBreadView;
-    private javax.swing.JLabel jLabelMoneyBreadView;
+    public javax.swing.JLabel jLabelMoneyBreadView;
     private javax.swing.JLabel jLabelPaymentMethodsBreadView;
     private javax.swing.JLabel jLabelPositionBreadView;
     private javax.swing.JLabel jLabelStar1BreadView;
@@ -398,8 +480,8 @@ public class Manager {
     private javax.swing.JPanel jPanelListBreadView;
     private javax.swing.JPanel jPanelPaymentMethodsBreadView;
     private javax.swing.JScrollPane jScrollPaneException1BreadView;
-    private javax.swing.JTable jTableMenuOfBread;
-    private javax.swing.JTextField jTextFieldNameBreadView;
+    public javax.swing.JTable jTableMenuOfBread;
+    public javax.swing.JTextField jTextFieldNameBreadView;
     // End of variables declaration 
     
         // Variables of BeerView                    
@@ -413,7 +495,7 @@ public class Manager {
     private javax.swing.JLabel jLabelGreenDotBeer;
     private javax.swing.JLabel jLabelHourOpenBeer;
     private javax.swing.JLabel jLabelImageBeerView;
-    private javax.swing.JLabel jLabelMoneyBeerView;
+    public javax.swing.JLabel jLabelMoneyBeerView;
     private javax.swing.JLabel jLabelPaymentMethodsBeerView;
     private javax.swing.JLabel jLabelPositionBeerView;
     private javax.swing.JLabel jLabelStar1BeerView;
@@ -432,9 +514,140 @@ public class Manager {
     private javax.swing.JPanel jPanelListBeerView;
     private javax.swing.JPanel jPanelPaymentMethodsBeerView;
     private javax.swing.JScrollPane jScrollPaneException1BeerView;
-    private javax.swing.JTable jTableMenuOfBeer;
-    private javax.swing.JTextField jTextFieldNameBeerView;
+    public javax.swing.JTable jTableMenuOfBeer;
+    public javax.swing.JTextField jTextFieldNameBeerView;
+    // End of variables declaration 
+    
+    // Variables of DiscountCode View                     
+    public  static javax.swing.JButton jButtonBackDiscountCodeView;
+    private javax.swing.JLabel jLabelImageHeaderDiscountCodeView;
+    private javax.swing.JLabel jLabelLoudSpeakerDiscountCodeView;
+    private javax.swing.JPanel jPanelBeerDiscountCodeView;
+    private javax.swing.JPanel jPanelBreadDiscountCodeView;
+    private javax.swing.JPanel jPanelBubbleTeaDiscountCodeView;
+    private javax.swing.JPanel jPanelCoffeeDiscountCodeView;
+    private javax.swing.JPanel jPanelDiscountCodeHeader;
+    public static  javax.swing.JPanel jPanelDiscountCodeView;
+    private javax.swing.JPanel jPanelHamburgerDiscountCodeView;
+    private javax.swing.JPanel jPanelHotdogDiscountCodeView;
+    private javax.swing.JPanel jPanelKFCDiscountCodeView;
+    private javax.swing.JPanel jPanelTotalDiscountCodeView;
+    private javax.swing.JScrollPane jScrollPaneBeerDiscountCodeView;
+    private javax.swing.JScrollPane jScrollPaneBreadDiscountCodeView;
+    private javax.swing.JScrollPane jScrollPaneBubbleTeaDiscountCodeView;
+    private javax.swing.JScrollPane jScrollPaneCoffeeDiscountCodeView;
+    private javax.swing.JScrollPane jScrollPaneHamburgerDiscountCodeView;
+    private javax.swing.JScrollPane jScrollPaneHotdogDiscountCodeView;
+    private javax.swing.JScrollPane jScrollPaneKFCDiscountCodeView;
+    private javax.swing.JScrollPane jScrollPaneTotalDiscountCodeView;
+    private javax.swing.JTabbedPane jTabbedFooterDiscountCodeView;
+    private javax.swing.JTable jTableBeerDiscountCodeView;
+    private javax.swing.JTable jTableBreadDiscountCodeView;
+    private javax.swing.JTable jTableBubbleTeaDiscountCodeView;
+    private javax.swing.JTable jTableCoffeeDiscountCodeView;
+    private javax.swing.JTable jTableHamburgerDiscountCodeView;
+    private javax.swing.JTable jTableHotdogDiscountCodeView;
+    private javax.swing.JTable jTableKFCDiscountCodeView;
+    private javax.swing.JTable jTableTotalDiscountCodeView;
     // End of variables declaration  
+    
+    
+    // Variables of CartView                  
+    public static javax.swing.JButton jButtonBackCartView;
+    public static javax.swing.JDesktopPane jDesktopPanelCartView;
+    private javax.swing.JLabel jLabelCartImageCartView;
+    public static javax.swing.JLabel jLabelImageCartView;
+    private javax.swing.JLabel jLabelInCashCartView;
+    private javax.swing.JLabel jLabelNameAppCartView;
+    private javax.swing.JLabel jLabelQRCartView;
+    public static javax.swing.JLabel jLabelWordCartView;
+    public static javax.swing.JPanel jPanelCartView;
+    private javax.swing.JPanel jPanelHorizontalCartView;
+    public static javax.swing.JPanel jPanelInCashCartView;
+    public static javax.swing.JPanel jPanelQRCartView;
+    private javax.swing.JPanel jPanelVerticalCartView;
+    // End of variables declaration
+    
+    // Variables of BillView                    
+    public javax.swing.JButton jButtonBackBillView;
+    private javax.swing.JLabel jLabelDateBillView;
+    private javax.swing.JLabel jLabelNameAppBillView;
+    private javax.swing.JLabel jLabelPROPTITBillView;
+    private javax.swing.JLabel jLabelReceiptBillView;
+    private javax.swing.JLabel jLabelResetBillView;
+    private javax.swing.JLabel jLabelTimeBillView;
+    private javax.swing.JLabel jLabelTotalBillView;
+    private javax.swing.JLabel jLabelWordBillView;
+    public static javax.swing.JPanel jPanelBillView;
+    private javax.swing.JPanel jPanelCenterBillView;
+    private javax.swing.JPanel jPanelHorizontalBillView;
+    private javax.swing.JPanel jPanelReceiptBillView;
+    private javax.swing.JPanel jPanelResetBillView;
+    private javax.swing.JPanel jPanelTotalBillView;
+    private javax.swing.JPanel jPanelVerticalLeftBillView;
+    private javax.swing.JPanel jPanelVerticalRightBillView;
+    private javax.swing.JPanel jPanelWordBillView;
+    private javax.swing.JScrollPane jScrollPaneBillView;
+    public javax.swing.JTextArea jTextAreaCenterBillView;
+    // End of variables declaration 
+    
+    
+    // Variables of Maintenance                   
+    public javax.swing.JButton jButtonBackUnderMaintenance;
+    private javax.swing.JLabel jLabelImageUnderMainTenance;
+    private javax.swing.JLabel jLabelNameAppUnderMaintenance;
+    private javax.swing.JLabel jLabelTextUnderMaintenance;
+    private javax.swing.JPanel jPanelHeaderUnderMainTenance;
+    public static javax.swing.JPanel jPanelUnderMaintenance;
+    // End of variables declaration
+    
+    // Variables of UserView                     
+    public javax.swing.JButton jButtonBackUserView;
+    private javax.swing.JButton jButtonUpdateInfoUserView;
+    private javax.swing.JLabel jLabelBirthUserView;
+    private javax.swing.JLabel jLabelCloseBarUserView;
+    private javax.swing.JLabel jLabelEmailUserView;
+    private javax.swing.JLabel jLabelGenderUserView;
+    private javax.swing.JLabel jLabelImageUserView;
+    private javax.swing.JLabel jLabelInfoAccountUserView;
+    private javax.swing.JLabel jLabelInfoSignInUserView;
+    private javax.swing.JLabel jLabelJobUserView;
+    private javax.swing.JLabel jLabelLikeUserView;
+    private javax.swing.JLabel jLabelMenuUserView;
+    private javax.swing.JLabel jLabelNameAppUserView;
+    private javax.swing.JLabel jLabelNameUserView;
+    private javax.swing.JLabel jLabelPasswordUserView;
+    private javax.swing.JLabel jLabelTextLikeUserView;
+    private javax.swing.JLabel jLabelTextTransactionUserView;
+    private javax.swing.JLabel jLabelTransactionHistoryUserView;
+    private javax.swing.JPanel jPanelContainerUserView;
+    private javax.swing.JPanel jPanelHorizonMainUserView;
+    private javax.swing.JPanel jPanelInfoAccountUserView;
+    private javax.swing.JPanel jPanelInforAccountMainUserView;
+    private javax.swing.JPanel jPanelLikeMainUserView;
+    private javax.swing.JPanel jPanelLikeUserView;
+    private javax.swing.JPanel jPanelTransactionHistoryMainUserView;
+    private javax.swing.JPanel jPanelTransactionHistoryUserView;
+    public javax.swing.JPanel jPanelUserView;
+    private javax.swing.JPanel jPanelVerticalUserView;
+    private javax.swing.JScrollPane jScrollPaneLikeUserView;
+    private javax.swing.JScrollPane jScrollPaneTransactionHistoryUserView;
+    private javax.swing.JSeparator jSeparatorImageUserView;
+    private javax.swing.JSeparator jSeparatorTextInfoSignInUserView;
+    private javax.swing.JSeparator jSeparatorTextLikeUserView;
+    private javax.swing.JSeparator jSeparatorTextTransactionHistoryUserView;
+    public javax.swing.JTextArea jTextAreaLikeUserView;
+    public static javax.swing.JTextArea jTextAreaTransactionUserView;
+    private javax.swing.JTextField jTextFieldBirthUserView;
+    private javax.swing.JTextField jTextFieldEmailUserView;
+    private javax.swing.JTextField jTextFieldGenderUserView;
+    private javax.swing.JTextField jTextFieldJobUserView;
+    private javax.swing.JTextField jTextFieldNameUserView;
+    private javax.swing.JTextField jTextFieldPasswordUserView;
+    private javax.swing.JButton jButtonDeleteHistoryOfTransactionHistoryUserView;
+    // End of variables declaration   
+    
+    
     
     public Manager(){
         writeAccountFromFile();
@@ -442,8 +655,8 @@ public class Manager {
     }
     
     private void init(){
-         jFrameMain = new JFrame("Trang chủ");
-        
+        jFrameMain = new JFrame("Trang chủ");
+        jFrameMain.isDisplayable();
         jFrameMain.setLayout(new  FlowLayout());
         jFrameMain.setLocationRelativeTo(null);
         jFrameMain.setSize(861, 488);
@@ -456,6 +669,16 @@ public class Manager {
         int x = (int) (center.getX() - jFrameMain.getWidth() / 2);
         int y = (int) (center.getY() - jFrameMain.getHeight() / 2-50);
         jFrameMain.setLocation(x, y);
+        
+        jFrameMain.setUndecorated(true);
+        jFrameMain.isDisplayable();
+        
+        SignUpGUI();
+        SignInGUI();
+        MainView();
+        BillView();
+        CartView();
+        DiscountCodeView();
         BubbleTeaView();
         DealHotTodayView();
         BeerView();
@@ -465,9 +688,13 @@ public class Manager {
         KFCView();
         PizzaView();
         HamburgerView();
-        MainView();
-        SignUpGUI();
-        SignInGUI();
+        getDataFromDiscountCodeView();
+        uploadDataFromDiscountCodeView();
+        UnderMaintenanceView();
+        UserView();
+//        for (DiscountCodeModel AA :discountCode){
+//            System.out.println(AA);
+//        }
         jFrameMain.add(jPanelSignInGUI);
         checkSignInFromSignUp = 1;
         checkBeer= 1;
@@ -479,7 +706,13 @@ public class Manager {
         checkHotdog=1;
         checkKFC=1;
         checkPizza=1;
-       
+        checkDiscountCode=1;
+        checkCart=1;
+        checkBill=1;
+        checkCollection=1;
+        checkFreeshipXtra=1;
+        checkCategory=1;
+        checkUser=1;
         jFrameMain.setVisible(true);
     }  
      private void SignInGUI() {
@@ -503,7 +736,6 @@ public class Manager {
         jLabel7 = new javax.swing.JLabel();
         jPasswordField = new javax.swing.JPasswordField();
 
-        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanelSignInGUI.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -523,7 +755,7 @@ public class Manager {
         textFieldEmailLogin.setCaretColor(new java.awt.Color(140, 140, 140));
         textFieldEmailLogin.addActionListener(new SignInGUIListener(this));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-delivery-man-64.png")); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-delivery-man-64.png")); // NOI18N
 
         passWordLabel.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         passWordLabel.setForeground(new java.awt.Color(102, 102, 102));
@@ -549,9 +781,9 @@ public class Manager {
         jLabel4.setForeground(new java.awt.Color(102, 102, 102));
         jLabel4.setText("Enter your details below to continue");
 
-        jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-password-50.png")); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-password-50.png")); // NOI18N
 
-        jLabel6.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-email-64.png")); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-email-64.png")); // NOI18N
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 51, 0));
@@ -715,7 +947,7 @@ public class Manager {
         jLabelFastFood.setForeground(new java.awt.Color(255, 51, 0));
         jLabelFastFood.setText("                 FAST FOOD");
 
-        jLabelPerson.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-delivery-man-64.png")); // NOI18N
+        jLabelPerson.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-delivery-man-64.png")); // NOI18N
 
         jTextFieldPassWord.setBorder(null);
 
@@ -801,8 +1033,6 @@ public class Manager {
         );
 
     }
-     
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void MainView() {
 
         jPanelMainView = new javax.swing.JPanel();
@@ -843,17 +1073,11 @@ public class Manager {
         jPanelFooter = new javax.swing.JPanel();
         jButtonHomePage = new javax.swing.JButton();
         jButtonOrder = new javax.swing.JButton();
-        jButtonFavorite = new javax.swing.JButton();
-        jButtonNotification = new javax.swing.JButton();
         jButtonMe = new javax.swing.JButton();
         jLabelOut = new javax.swing.JLabel();
         jLabelOrder = new javax.swing.JLabel();
-        jLabelFavorite = new javax.swing.JLabel();
-        jLabelNotification = new javax.swing.JLabel();
         jLabelMe = new javax.swing.JLabel();
-
-        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        //setBackground(new java.awt.Color(255, 255, 255));
+        jLabelHelloMainView = new javax.swing.JLabel();
 
         jPanelMainView.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -866,80 +1090,66 @@ public class Manager {
         jPanelMainBody.setBackground(new java.awt.Color(255, 255, 255));
 
         jButtonHamburger.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-hamburger-48.png")); // NOI18N
-        jButtonHamburger.setName("HamburgerButton");
         jButtonHamburger.setBorder(null);
         jButtonHamburger.addActionListener(new MainListener());
 
         jButtonDealHotToday.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-hot-sale-64.png")); // NOI18N
-        jButtonDealHotToday.setName("DealHotTodayButton");
         jButtonDealHotToday.setBorder(null);
         jButtonDealHotToday.addActionListener(new MainListener());
-        
+
         jButtonCart.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-shopping-cart-64.png")); // NOI18N
-        jButtonCart.setName("CartButton");
         jButtonCart.setBorder(null);
         jButtonCart.addActionListener(new MainListener());
 
         jButtonDiscountCode.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-discount-48.png")); // NOI18N
-        jButtonDiscountCode.setName("DiscountCodeButton");
         jButtonDiscountCode.setBorder(null);
         jButtonDiscountCode.addActionListener(new MainListener());
 
         jButtonHotdog.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-hot-dog-48.png")); // NOI18N
-        jButtonHotdog.setName("HotdogButton");
         jButtonHotdog.setBorder(null);
         jButtonHotdog.addActionListener(new MainListener());
 
         jButtonCollection.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-food-bar-48.png")); // NOI18N
-        jButtonCollection.setName("CollectionButton");
         jButtonCollection.setBorder(null);
         jButtonCollection.addActionListener(new MainListener());
 
         jButtonFreeshipXtra.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-ecommerce-64.png")); // NOI18N
-        jButtonFreeshipXtra.setName("FreeshipXtraButton");
         jButtonFreeshipXtra.setBorder(null);
         jButtonFreeshipXtra.addActionListener(new MainListener());
 
         jButtonCoffee.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-iced-coffee-40.png")); // NOI18N
-        jButtonCoffee.setName("CoffeeButton");
         jButtonCoffee.setBorder(null);
         jButtonCoffee.addActionListener(new MainListener());
-        
+
         jButtonBubbleTea.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-bubble-tea-40.png")); // NOI18N
-        jButtonBubbleTea.setName("BubbleTeaButton");
         jButtonBubbleTea.setBorder(null);
         jButtonBubbleTea.addActionListener(new MainListener());
 
         jButtonCategory.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-category-64.png")); // NOI18N
-        jButtonCategory.setName("CategoryButton");
         jButtonCategory.setBorder(null);
         jButtonCategory.addActionListener(new MainListener());
 
         jButtonBeer.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-pint-48.png")); // NOI18N
-        jButtonBeer.setName("BeerButton");
         jButtonBeer.setBorder(null);
         jButtonBeer.addActionListener(new MainListener());
 
         jButtonPizza.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-pizza-48.png")); // NOI18N
-        jButtonPizza.setName("PizzaButton");
         jButtonPizza.setBorder(null);
         jButtonPizza.addActionListener(new MainListener());
 
         jButtonKFC.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-kfc-chicken-48.png")); // NOI18N
-        jButtonKFC.setName("KFCButton");
         jButtonKFC.setBorder(null);
         jButtonKFC.addActionListener(new MainListener());
 
         jButtonBread.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-bread-64.png")); // NOI18N
-        jButtonBread.setName("BreadButton");
         jButtonBread.setBorder(null);
         jButtonBread.addActionListener(new MainListener());
 
-        jLabelHamburger.setText("    Hamburger");
+        jLabelHamburger.setText("Hamburger");
 
         jLabelDealHotToday.setText("Deal hot hôm nay");
 
-        jLabelCart.setText("Giỏ hàng");
+        jLabelCart.setText("   Giỏ hàng");
 
         jLabelDiscountCode.setText("Mã giảm giá");
 
@@ -949,147 +1159,127 @@ public class Manager {
 
         jLabelFreeshipXtra.setText("Freeship Xtra");
 
-        jLabelCoffee.setText("  Coffee");
+        jLabelCoffee.setText("    Coffee");
 
-        jLabelBubbleTea.setText("   Trà sữa");
+        jLabelBubbleTea.setText("    Trà sữa");
 
-        jLabelrBread.setText("Bánh mì");
+        jLabelrBread.setText("   Bánh mì");
 
-        jLabelKFC.setText("Gà rán KFC");
+        jLabelKFC.setText(" Gà rán KFC");
 
-        jLabelPizza.setText("Pizza");
+        jLabelPizza.setText("     Pizza");
 
-        jLabelBeer.setText("  Bia hơi");
+        jLabelBeer.setText("     Bia hơi");
 
-        jLabelCategory.setText("Danh mục");
+        jLabelCategory.setText(" Danh mục");
 
         javax.swing.GroupLayout jPanelMainBodyLayout = new javax.swing.GroupLayout(jPanelMainBody);
         jPanelMainBody.setLayout(jPanelMainBodyLayout);
         jPanelMainBodyLayout.setHorizontalGroup(
             jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMainBodyLayout.createSequentialGroup()
-                .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(38, 38, 38)
+                .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonHamburger, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                    .addComponent(jLabelHamburger, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonCoffee, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelCoffee, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelMainBodyLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButtonHamburger, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelHamburger)
-                            .addComponent(jButtonCoffee, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMainBodyLayout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(jLabelCoffee, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMainBodyLayout.createSequentialGroup()
-                        .addGap(35, 35, 35)
+                        .addGap(48, 48, 48)
+                        .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonBubbleTea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelBubbleTea, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE))
+                        .addGap(48, 48, 48)
+                        .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabelrBread, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                            .addComponent(jButtonBread, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanelMainBodyLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMainBodyLayout.createSequentialGroup()
-                                .addComponent(jButtonDealHotToday, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonDealHotToday, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(48, 48, 48))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMainBodyLayout.createSequentialGroup()
                                 .addComponent(jLabelDealHotToday)
-                                .addGap(29, 29, 29)))
-                        .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonCart, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanelMainBodyLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabelCart))))
-                    .addGroup(jPanelMainBodyLayout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonBubbleTea, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelBubbleTea, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(32, 32, 32)))
                         .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanelMainBodyLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabelrBread, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jButtonBread, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabelCart, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                            .addComponent(jButtonCart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(48, 48, 48)
                 .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelMainBodyLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                        .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonDiscountCode, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelDiscountCode, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(32, 32, 32)
+                        .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButtonDiscountCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelDiscountCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(48, 48, 48)
                         .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabelHotdog, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
                             .addComponent(jButtonHotdog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanelMainBodyLayout.createSequentialGroup()
-                        .addGap(34, 34, 34)
                         .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonKFC, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelKFC))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonPizza, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMainBodyLayout.createSequentialGroup()
-                                .addComponent(jLabelPizza, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(11, 11, 11)))))
-                .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelMainBodyLayout.createSequentialGroup()
+                            .addComponent(jButtonKFC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelKFC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(48, 48, 48)
                         .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButtonCollection, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonBeer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelCollection, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelMainBodyLayout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(jLabelBeer, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButtonPizza, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                            .addComponent(jLabelPizza, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(48, 48, 48)
-                .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonFreeshipXtra, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelFreeshipXtra)
-                    .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabelCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButtonCategory, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonCollection, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonBeer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelCollection, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                    .addComponent(jLabelBeer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(48, 48, 48)
+                .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonFreeshipXtra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelCategory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonCategory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelFreeshipXtra, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(41, 41, 41))
         );
         jPanelMainBodyLayout.setVerticalGroup(
             jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMainBodyLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonFreeshipXtra, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonDiscountCode, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonDealHotToday, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonCart, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonHotdog, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonCollection, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonHamburger, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanelMainBodyLayout.createSequentialGroup()
                         .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonFreeshipXtra, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonDiscountCode, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jButtonDealHotToday, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButtonCart, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButtonHotdog, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jButtonCollection, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButtonHamburger, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelMainBodyLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabelFreeshipXtra, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelMainBodyLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabelHotdog, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelMainBodyLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabelCart, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
-                                    .addComponent(jLabelDiscountCode, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabelDealHotToday, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabelHamburger, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonCoffee, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButtonKFC, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(jPanelMainBodyLayout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(jLabelCollection, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabelCollection, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabelFreeshipXtra, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabelDealHotToday, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButtonBubbleTea, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonBread, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonPizza, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonBeer, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonBeer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButtonBubbleTea, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonBread, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonPizza, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButtonCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanelMainBodyLayout.createSequentialGroup()
+                        .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabelHotdog, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                            .addComponent(jLabelCart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelDiscountCode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelHamburger, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButtonKFC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButtonCoffee, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelMainBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelCoffee, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
+                    .addComponent(jLabelCoffee, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelBubbleTea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelrBread, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabelKFC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1102,90 +1292,47 @@ public class Manager {
         jPanelFooter.setForeground(new java.awt.Color(255, 102, 0));
 
         jButtonHomePage.setForeground(new java.awt.Color(255, 102, 0));
-        jButtonHomePage.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-home-page-60.png")); // NOI18N
+        jButtonHomePage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-tongue-out.gif"))); // NOI18N
         jButtonHomePage.setBorder(null);
-        jButtonHomePage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                //jButtonHomePageActionPerformed(evt);
-            }
-        });
+        jButtonHomePage.addActionListener(new ButtonBelowListener(this));
 
         jButtonOrder.setForeground(new java.awt.Color(255, 102, 0));
-        jButtonOrder.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-purchase-order-60.png")); // NOI18N
+        jButtonOrder.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-bookmark.gif"))); // NOI18N
         jButtonOrder.setBorder(null);
-        jButtonOrder.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                //jButtonOrderActionPerformed(evt);
-            }
-        });
-
-        jButtonFavorite.setForeground(new java.awt.Color(255, 102, 0));
-        jButtonFavorite.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-favorite-48.png")); // NOI18N
-        jButtonFavorite.setBorder(null);
-        jButtonFavorite.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                //jButtonFavoriteActionPerformed(evt);
-            }
-        });
-
-        jButtonNotification.setForeground(new java.awt.Color(255, 102, 0));
-        jButtonNotification.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-alarm-50.png")); // NOI18N
-        jButtonNotification.setBorder(null);
-        jButtonNotification.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                //jButtonNotificationActionPerformed(evt);
-            }
-        });
+        jButtonOrder.addActionListener(new ButtonBelowListener(this));
 
         jButtonMe.setForeground(new java.awt.Color(255, 102, 0));
-        jButtonMe.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-me-58.png")); // NOI18N
+        jButtonMe.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-circled-user-male-skin-type-7.gif"))); // NOI18N
         jButtonMe.setBorder(null);
+        jButtonMe.addActionListener(new ButtonBelowListener(this));
 
-        jLabelOut.setText("Đăng xuất");
+        jLabelOut.setText("  Đăng xuất");
 
-        jLabelOrder.setText("Đơn hàng");
+        jLabelOrder.setText("    Đơn hàng");
 
-        jLabelFavorite.setText(" Đã thích");
-
-        jLabelNotification.setText("Thông báo");
-
-        jLabelMe.setText("   Tôi");
+        jLabelMe.setText("     Tôi");
 
         javax.swing.GroupLayout jPanelFooterLayout = new javax.swing.GroupLayout(jPanelFooter);
         jPanelFooter.setLayout(jPanelFooterLayout);
         jPanelFooterLayout.setHorizontalGroup(
             jPanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelFooterLayout.createSequentialGroup()
-                .addGap(171, 171, 171)
-                .addGroup(jPanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelFooterLayout.createSequentialGroup()
-                        .addComponent(jButtonHomePage, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(jButtonOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelFooterLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jLabelOut)
-                        .addGap(60, 60, 60)
-                        .addComponent(jLabelOrder)))
-                .addGroup(jPanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelFooterLayout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jButtonFavorite, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFooterLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelFavorite, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)))
                 .addGroup(jPanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabelNotification, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonNotification, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelFooterLayout.createSequentialGroup()
+                        .addGap(302, 302, 302)
+                        .addComponent(jButtonHomePage)
+                        .addGap(60, 60, 60)
+                        .addComponent(jButtonOrder)
+                        .addGap(60, 60, 60))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelFooterLayout.createSequentialGroup()
+                        .addGap(295, 295, 295)
+                        .addComponent(jLabelOut)
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabelOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelFooterLayout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(jButtonMe, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelFooterLayout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(jLabelMe, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButtonMe)
+                    .addComponent(jLabelMe, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelFooterLayout.setVerticalGroup(
@@ -1193,17 +1340,13 @@ public class Manager {
             .addGroup(jPanelFooterLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButtonOrder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jButtonFavorite, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonNotification, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButtonMe, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonHomePage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonHomePage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelFooterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelOut)
                     .addComponent(jLabelOrder)
-                    .addComponent(jLabelFavorite)
-                    .addComponent(jLabelNotification)
                     .addComponent(jLabelMe))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
@@ -1213,46 +1356,49 @@ public class Manager {
         jPanelMainViewLayout.setHorizontalGroup(
             jPanelMainViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMainViewLayout.createSequentialGroup()
-                .addComponent(jLabelDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
                 .addGroup(jPanelMainViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelException1MainView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanelMainViewLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabelException1MainView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanelMainViewLayout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jTextFieldPosition)
-                        .addContainerGap())))
+                        .addGroup(jPanelMainViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelMainViewLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addGroup(jPanelMainViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelHelloMainView, javax.swing.GroupLayout.PREFERRED_SIZE, 445, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanelMainViewLayout.createSequentialGroup()
+                                        .addComponent(jLabelDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabelPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextFieldPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 738, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabelHeader))
+                        .addGap(0, 0, Short.MAX_VALUE))))
             .addGroup(jPanelMainViewLayout.createSequentialGroup()
-                .addGroup(jPanelMainViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jPanelFooter, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanelMainViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelMainViewLayout.createSequentialGroup()
-                            .addGap(34, 34, 34)
-                            .addComponent(jPanelMainBody, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanelMainViewLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(jLabelHeader))))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(34, 34, 34)
+                .addComponent(jPanelMainBody, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 35, Short.MAX_VALUE))
+            .addComponent(jPanelFooter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelMainViewLayout.setVerticalGroup(
             jPanelMainViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMainViewLayout.createSequentialGroup()
                 .addComponent(jLabelException1MainView)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelHelloMainView, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelMainViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabelDelivery, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelPosition)
                     .addComponent(jTextFieldPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanelMainBody, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanelFooter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-    }// </editor-fold> 
+
+    }
                          
     private void HamburgerView() {
 
@@ -1407,7 +1553,7 @@ public class Manager {
         jButtonFavoriteHamburgerView.setBackground(new java.awt.Color(255, 0, 51));
         jButtonFavoriteHamburgerView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\Favorite.png")); // NOI18N
         jButtonFavoriteHamburgerView.setBorder(null);
-        jButtonFavoriteHamburgerView.addActionListener(new HamburgerListener());
+        jButtonFavoriteHamburgerView.addActionListener(new HamburgerListener(this));
 
         javax.swing.GroupLayout jPanelContainerHamburgerViewLayout = new javax.swing.GroupLayout(jPanelContainerHamburgerView);
         jPanelContainerHamburgerView.setLayout(jPanelContainerHamburgerViewLayout);
@@ -1515,7 +1661,7 @@ public class Manager {
         jLabelSumHamburgerView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelSumHamburgerView.setText("Tổng:");
 
-        jLabelMoneyHamburgerView.setText("0");
+        jLabelMoneyHamburgerView.setText("                                                   0");
         jLabelMoneyHamburgerView.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabelVNDHamburgerView.setText("VNĐ");
@@ -1523,7 +1669,7 @@ public class Manager {
         jButtonAddHamburgerView.setBackground(new java.awt.Color(255, 255, 0));
         jButtonAddHamburgerView.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButtonAddHamburgerView.setText("Thêm");
-        jButtonAddHamburgerView.addActionListener(new HamburgerListener());
+        jButtonAddHamburgerView.addActionListener(new HamburgerListener(this));
 
         javax.swing.GroupLayout jPanelListHamburgerViewLayout = new javax.swing.GroupLayout(jPanelListHamburgerView);
         jPanelListHamburgerView.setLayout(jPanelListHamburgerViewLayout);
@@ -1567,11 +1713,11 @@ public class Manager {
 
         jButtonPayInCashHamburgerView.setBackground(new java.awt.Color(102, 255, 0));
         jButtonPayInCashHamburgerView.setText("Sử dụng tiền mặt");
-        jButtonPayInCashHamburgerView.addActionListener(new HamburgerListener());
+        jButtonPayInCashHamburgerView.addActionListener(new HamburgerListener(this));
 
         jButtonPayWithQRCodeHamburgerView.setBackground(new java.awt.Color(51, 255, 0));
         jButtonPayWithQRCodeHamburgerView.setText("Quét mã QR");
-        jButtonPayWithQRCodeHamburgerView.addActionListener(new HamburgerListener());
+        jButtonPayWithQRCodeHamburgerView.addActionListener(new HamburgerListener(this));
         
         jLabelPaymentMethodsHamburgerView.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabelPaymentMethodsHamburgerView.setText("      Phương thức thanh toán");
@@ -1604,9 +1750,9 @@ public class Manager {
         );
 
         jButtonBackHamburgerView.setBackground(new java.awt.Color(255, 153, 51));
-        jButtonBackHamburgerView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-back-64.png")); // NOI18N
+        jButtonBackHamburgerView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif")));// NOI18N
         jButtonBackHamburgerView.setBorder(null);
-        jButtonBackHamburgerView.addActionListener(new HamburgerListener());
+        jButtonBackHamburgerView.addActionListener(new HamburgerListener(this));
 
         javax.swing.GroupLayout jPanelHamburgerViewLayout = new javax.swing.GroupLayout(jPanelHamburgerView);
         jPanelHamburgerView.setLayout(jPanelHamburgerViewLayout);
@@ -1682,9 +1828,9 @@ public class Manager {
         jPanelPizzaView.setBackground(new java.awt.Color(255, 153, 51));
 
         jButtonBackPizza.setBackground(new java.awt.Color(255, 153, 51));
-        jButtonBackPizza.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-back-64.png")); // NOI18N
+        jButtonBackPizza.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif"))); // NOI18N
         jButtonBackPizza.setBorder(null);
-        jButtonBackPizza.addActionListener(new PizzaListener());
+        jButtonBackPizza.addActionListener(new PizzaListener(this));
 
         jPanelListPizzaView.setBackground(new java.awt.Color(255, 153, 51));
 
@@ -1692,7 +1838,7 @@ public class Manager {
         jLabelSumPizzaView.setText("Tổng:");
 
         jLabelMoneyPizzaView.setBackground(new java.awt.Color(255, 153, 51));
-        jLabelMoneyPizzaView.setText("0");
+        jLabelMoneyPizzaView.setText("                                                   0");
         jLabelMoneyPizzaView.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabelVNDPizzaView.setText("VNĐ");
@@ -1700,7 +1846,7 @@ public class Manager {
         jButtonAddPizzaView.setBackground(new java.awt.Color(255, 255, 0));
         jButtonAddPizzaView.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButtonAddPizzaView.setText("Thêm");
-        jButtonAddPizzaView.addActionListener(new PizzaListener());
+        jButtonAddPizzaView.addActionListener(new PizzaListener(this));
 
         jTableMenuOfPizza.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1789,11 +1935,11 @@ public class Manager {
 
         jButtonPayInCashPizzaView.setBackground(new java.awt.Color(102, 255, 0));
         jButtonPayInCashPizzaView.setText("Sử dụng tiền mặt");
-        jButtonPayInCashPizzaView.addActionListener(new PizzaListener());
+        jButtonPayInCashPizzaView.addActionListener(new PizzaListener(this));
 
         jButtonPayWithQRCodePizzaView.setBackground(new java.awt.Color(51, 255, 0));
         jButtonPayWithQRCodePizzaView.setText("Quét mã QR");
-        jButtonPayWithQRCodePizzaView.addActionListener(new PizzaListener());
+        jButtonPayWithQRCodePizzaView.addActionListener(new PizzaListener(this));
 
         javax.swing.GroupLayout jPanelPaymentMethodsPizzaViewLayout = new javax.swing.GroupLayout(jPanelPaymentMethodsPizzaView);
         jPanelPaymentMethodsPizzaView.setLayout(jPanelPaymentMethodsPizzaViewLayout);
@@ -1867,7 +2013,7 @@ public class Manager {
         jButtonFavoritePizzaView.setBackground(new java.awt.Color(255, 0, 51));
         jButtonFavoritePizzaView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\Favorite.png")); // NOI18N
         jButtonFavoritePizzaView.setBorder(null);
-        jButtonFavoritePizzaView.addActionListener(new PizzaListener());
+        jButtonFavoritePizzaView.addActionListener(new PizzaListener(this));
 
         jLabelException2PizzaView.setBackground(new java.awt.Color(255, 153, 51));
 
@@ -2071,7 +2217,7 @@ public class Manager {
         jLabelSumKFCView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelSumKFCView.setText("Tổng:");
 
-        jLabelMoneyKFCView.setText("0");
+        jLabelMoneyKFCView.setText("                                                   0");
         jLabelMoneyKFCView.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabelVNDKFCView.setText("VNĐ");
@@ -2079,7 +2225,7 @@ public class Manager {
         jButtonAddKFCView.setBackground(new java.awt.Color(255, 255, 0));
         jButtonAddKFCView.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButtonAddKFCView.setText("Thêm");
-        jButtonAddKFCView.addActionListener(new KFCListener());
+        jButtonAddKFCView.addActionListener(new KFCListener(this));
 
         javax.swing.GroupLayout jPanelListKFCViewLayout = new javax.swing.GroupLayout(jPanelListKFCView);
         jPanelListKFCView.setLayout(jPanelListKFCViewLayout);
@@ -2122,9 +2268,9 @@ public class Manager {
         );
 
         jButtonBackKFC.setBackground(new java.awt.Color(255, 153, 51));
-        jButtonBackKFC.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-back-64.png")); // NOI18N
+        jButtonBackKFC.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif"))); // NOI18N
         jButtonBackKFC.setBorder(null);
-        jButtonBackKFC.addActionListener(new KFCListener());
+        jButtonBackKFC.addActionListener(new KFCListener(this));
 
         jLabelImageKFCView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\KFCView.png")); // NOI18N
         jLabelImageKFCView.setText("jLabel1");
@@ -2134,11 +2280,11 @@ public class Manager {
 
         jButtonPayInCashKFCView.setBackground(new java.awt.Color(102, 255, 0));
         jButtonPayInCashKFCView.setText("Sử dụng tiền mặt");
-        jButtonPayInCashKFCView.addActionListener(new KFCListener());
+        jButtonPayInCashKFCView.addActionListener(new KFCListener(this));
 
         jButtonPayWithQRCodeKFCView.setBackground(new java.awt.Color(51, 255, 0));
         jButtonPayWithQRCodeKFCView.setText("Quét mã QR");
-        jButtonPayWithQRCodeKFCView.addActionListener(new KFCListener());
+        jButtonPayWithQRCodeKFCView.addActionListener(new KFCListener(this));
 
         javax.swing.GroupLayout jPanelPaymentMethodsKFCViewLayout = new javax.swing.GroupLayout(jPanelPaymentMethodsKFCView);
         jPanelPaymentMethodsKFCView.setLayout(jPanelPaymentMethodsKFCViewLayout);
@@ -2253,7 +2399,7 @@ public class Manager {
         jButtonFavoriteKFCView.setBackground(new java.awt.Color(255, 0, 51));
         jButtonFavoriteKFCView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\Favorite.png")); // NOI18N
         jButtonFavoriteKFCView.setBorder(null);
-        jButtonFavoriteKFCView.addActionListener(new KFCListener());
+        jButtonFavoriteKFCView.addActionListener(new KFCListener(this));
 
         jLabelGreenDotKFC.setBackground(new java.awt.Color(255, 102, 0));
         jLabelGreenDotKFC.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-green-circle-48.png")); // NOI18N
@@ -2385,7 +2531,7 @@ public class Manager {
         jLabelSumHotdogView.setText("Tổng:");
 
         jLabelMoneyHotdogView.setBackground(new java.awt.Color(255, 153, 0));
-        jLabelMoneyHotdogView.setText("0                                                      0");
+        jLabelMoneyHotdogView.setText("                                                   0");
         jLabelMoneyHotdogView.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabelVNDHotdogView.setText("VNĐ");
@@ -2393,7 +2539,7 @@ public class Manager {
         jButtonAddHotdogView.setBackground(new java.awt.Color(255, 255, 0));
         jButtonAddHotdogView.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButtonAddHotdogView.setText("Thêm");
-        jButtonAddHotdogView.addActionListener(new HotdogListener());
+        jButtonAddHotdogView.addActionListener(new HotdogListener(this));
 
         jScrollPaneException1HotdogView.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -2484,11 +2630,11 @@ public class Manager {
         );
 
         jButtonBackHotdogView.setBackground(new java.awt.Color(255, 153, 51));
-        jButtonBackHotdogView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-back-64.png")); // NOI18N
+        jButtonBackHotdogView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif"))); // NOI18N
         jButtonBackHotdogView.setBorder(null);
-        jButtonBackHotdogView.addActionListener(new HotdogListener());
+        jButtonBackHotdogView.addActionListener(new HotdogListener(this));
 
-        jLabelImageHotdogView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\HotdogView.png")); // NOI18N
+        jLabelImageHotdogView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\HotdogView.png")); // NOI18N
         jLabelImageHotdogView.setText("jLabel1");
 
         jPanelContainerHotdogView.setBackground(new java.awt.Color(255, 153, 51));
@@ -2496,7 +2642,7 @@ public class Manager {
         jButtonFavoriteHotdogView.setBackground(new java.awt.Color(255, 0, 51));
         jButtonFavoriteHotdogView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\Favorite.png")); // NOI18N
         jButtonFavoriteHotdogView.setBorder(null);
-        jButtonFavoriteHotdogView.addActionListener(new HotdogListener());
+        jButtonFavoriteHotdogView.addActionListener(new HotdogListener(this));
 
         jLabelPositionHotdogView.setBackground(new java.awt.Color(255, 153, 51));
         jLabelPositionHotdogView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -2642,11 +2788,11 @@ public class Manager {
 
         jButtonPayInCashHotdogView.setBackground(new java.awt.Color(102, 255, 0));
         jButtonPayInCashHotdogView.setText("Sử dụng tiền mặt");
-        jButtonPayInCashHotdogView.addActionListener(new HotdogListener());
+        jButtonPayInCashHotdogView.addActionListener(new HotdogListener(this));
 
         jButtonPayWithQRCodeHotdogView.setBackground(new java.awt.Color(51, 255, 0));
         jButtonPayWithQRCodeHotdogView.setText("Quét mã QR");
-        jButtonPayWithQRCodeHotdogView.addActionListener(new HotdogListener());
+        jButtonPayWithQRCodeHotdogView.addActionListener(new HotdogListener(this));
 
         javax.swing.GroupLayout jPanelPaymentMethodsHotdogViewLayout = new javax.swing.GroupLayout(jPanelPaymentMethodsHotdogView);
         jPanelPaymentMethodsHotdogView.setLayout(jPanelPaymentMethodsHotdogViewLayout);
@@ -2727,11 +2873,11 @@ public class Manager {
         jPanelDealHotTodayView.setBackground(new java.awt.Color(255, 153, 51));
 
         jButtonBackDealHotTodayView.setBackground(new java.awt.Color(255, 153, 51));
-        jButtonBackDealHotTodayView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-back-64.png")); // NOI18N
+        jButtonBackDealHotTodayView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif")));// NOI18N
         jButtonBackDealHotTodayView.setBorder(null);
         jButtonBackDealHotTodayView.addActionListener(new DealHotTodayListener());
 
-        jLabelException1DealHotTodayView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\DealHotTodayView.jpg")); // NOI18N
+        jLabelException1DealHotTodayView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\DealHotTodayView.jpg")); // NOI18N
 
         javax.swing.GroupLayout jPanelDealHotTodayViewLayout = new javax.swing.GroupLayout(jPanelDealHotTodayView);
         jPanelDealHotTodayView.setLayout(jPanelDealHotTodayViewLayout);
@@ -2754,10 +2900,10 @@ public class Manager {
 
         jPanelException1DealHotTodayView.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButtonBackDealHotTodayView1.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-back-64.png")); // NOI18N
+        jButtonBackDealHotTodayView1.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-back-64.png")); // NOI18N
         jButtonBackDealHotTodayView1.setBorder(null);
 
-        jLabelException3DealHotTodayView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\DealHotTodayView.jpg")); // NOI18N
+        jLabelException3DealHotTodayView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\DealHotTodayView.jpg")); // NOI18N
 
         javax.swing.GroupLayout jPanelException1DealHotTodayViewLayout = new javax.swing.GroupLayout(jPanelException1DealHotTodayView);
         jPanelException1DealHotTodayView.setLayout(jPanelException1DealHotTodayViewLayout);
@@ -2780,10 +2926,10 @@ public class Manager {
 
         jPanelException3DealHotTodayView.setBackground(new java.awt.Color(255, 255, 255));
 
-        jButtonBackDealHotTodayView3.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-back-64.png")); // NOI18N
+        jButtonBackDealHotTodayView3.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-back-64.png")); // NOI18N
         jButtonBackDealHotTodayView3.setBorder(null);
 
-        jLabelException4DealHotTodayView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\DealHotTodayView.jpg")); // NOI18N
+        jLabelException4DealHotTodayView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\DealHotTodayView.jpg")); // NOI18N
 
         javax.swing.GroupLayout jPanelException3DealHotTodayViewLayout = new javax.swing.GroupLayout(jPanelException3DealHotTodayView);
         jPanelException3DealHotTodayView.setLayout(jPanelException3DealHotTodayViewLayout);
@@ -2853,16 +2999,16 @@ public class Manager {
         jPanelCoffeeView.setBackground(new java.awt.Color(255, 153, 51));
 
         jButtonBackCoffee.setBackground(new java.awt.Color(255, 153, 51));
-        jButtonBackCoffee.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-back-64.png")); // NOI18N
+        jButtonBackCoffee.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif"))); // NOI18N
         jButtonBackCoffee.setBorder(null);
-        jButtonBackCoffee.addActionListener(new CoffeeListener());
+        jButtonBackCoffee.addActionListener(new CoffeeListener(this));
 
         jPanelListCoffeeView.setBackground(new java.awt.Color(255, 153, 51));
 
         jLabelSumCoffeeView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelSumCoffeeView.setText("Tổng:");
 
-        jLabelMoneyCoffeeView.setText("0");
+        jLabelMoneyCoffeeView.setText("                                                   0");
         jLabelMoneyCoffeeView.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabelVNDCoffeeView.setText("VNĐ");
@@ -2870,7 +3016,7 @@ public class Manager {
         jButtonAddCoffeeView.setBackground(new java.awt.Color(255, 255, 0));
         jButtonAddCoffeeView.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButtonAddCoffeeView.setText("Thêm");
-        jButtonAddCoffeeView.addActionListener(new CoffeeListener());
+        jButtonAddCoffeeView.addActionListener(new CoffeeListener(this));
 
         jTableMenuOfCoffee.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -2992,7 +3138,7 @@ public class Manager {
         );
 
         jLabelImageCoffeeView.setBackground(new java.awt.Color(255, 153, 51));
-        jLabelImageCoffeeView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\coffeeView1.png")); // NOI18N
+        jLabelImageCoffeeView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\coffeeView1.png")); // NOI18N
         jLabelImageCoffeeView.setText("jLabel1");
 
         jPanelException1CoffeeView.setBackground(new java.awt.Color(255, 153, 51));
@@ -3086,7 +3232,7 @@ public class Manager {
         jButtonFavoriteCoffeeView.setBackground(new java.awt.Color(255, 0, 51));
         jButtonFavoriteCoffeeView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\Favorite.png")); // NOI18N
         jButtonFavoriteCoffeeView.setBorder(null);
-        jButtonFavoriteCoffeeView.addActionListener(new CoffeeListener());
+        jButtonFavoriteCoffeeView.addActionListener(new CoffeeListener(this));
 
         jLabelGreenDotCoffee.setBackground(new java.awt.Color(255, 102, 0));
         jLabelGreenDotCoffee.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-green-circle-48.png")); // NOI18N
@@ -3134,11 +3280,11 @@ public class Manager {
 
         jButtonPayInCashCoffeeView.setBackground(new java.awt.Color(102, 255, 0));
         jButtonPayInCashCoffeeView.setText("Sử dụng tiền mặt");
-        jButtonPayInCashCoffeeView.addActionListener(new CoffeeListener());
+        jButtonPayInCashCoffeeView.addActionListener(new CoffeeListener(this));
 
         jButtonPayWithQRCodeCoffeeView.setBackground(new java.awt.Color(51, 255, 0));
         jButtonPayWithQRCodeCoffeeView.setText("Quét mã QR");
-        jButtonPayWithQRCodeCoffeeView.addActionListener(new CoffeeListener());
+        jButtonPayWithQRCodeCoffeeView.addActionListener(new CoffeeListener(this));
 
         javax.swing.GroupLayout jPanelPaymentMethodsCoffeeViewLayout = new javax.swing.GroupLayout(jPanelPaymentMethodsCoffeeView);
         jPanelPaymentMethodsCoffeeView.setLayout(jPanelPaymentMethodsCoffeeViewLayout);
@@ -3211,7 +3357,6 @@ public class Manager {
         );
     }
     private void BubbleTeaView() {
-
         jPanelBubbleTeaView = new javax.swing.JPanel();
         jButtonBackBubbleTeaException1 = new javax.swing.JButton();
         jPanelListBubbleTeaView = new javax.swing.JPanel();
@@ -3256,7 +3401,7 @@ public class Manager {
         jLabelSumBubbleTeaView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelSumBubbleTeaView.setText("Tổng:");
 
-        jLabelMoneyBubbleTeaView.setText("0");
+        jLabelMoneyBubbleTeaView.setText("                                                   0");
         jLabelMoneyBubbleTeaView.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabelVNDBubbleTeaView.setText("VNĐ");
@@ -3264,7 +3409,7 @@ public class Manager {
         jButtonAddBubbleTeaView.setBackground(new java.awt.Color(255, 255, 0));
         jButtonAddBubbleTeaView.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButtonAddBubbleTeaView.setText("Thêm");
-        jButtonAddBubbleTeaView.addActionListener(new BubbleTeaListener());
+        jButtonAddBubbleTeaView.addActionListener(new BubbleTeaListener(this));
 
         jTableMenuOfBubbleTea.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -3394,17 +3539,17 @@ public class Manager {
         jLabelImageBubbleTeaView.setText("jLabel1");
 
         jButtonBackBubbleTea.setBackground(new java.awt.Color(255, 153, 51));
-        jButtonBackBubbleTea.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-back-64.png")); // NOI18N
+        jButtonBackBubbleTea.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif")));
         jButtonBackBubbleTea.setBorder(null);
-        jButtonBackBubbleTea.addActionListener(new BubbleTeaListener());
+        jButtonBackBubbleTea.addActionListener(new BubbleTeaListener(this));
 
         jButtonPayWithQRCodeBubbleTeaView.setBackground(new java.awt.Color(51, 255, 0));
         jButtonPayWithQRCodeBubbleTeaView.setText("Quét mã QR");
-        jButtonPayWithQRCodeBubbleTeaView.addActionListener(new BubbleTeaListener());
+        jButtonPayWithQRCodeBubbleTeaView.addActionListener(new BubbleTeaListener(this));
 
         jButtonPayInCashBubbleTeaView.setBackground(new java.awt.Color(102, 255, 0));
         jButtonPayInCashBubbleTeaView.setText("Sử dụng tiền mặt");
-        jButtonPayInCashBubbleTeaView.addActionListener(new BubbleTeaListener());
+        jButtonPayInCashBubbleTeaView.addActionListener(new BubbleTeaListener(this));
 
         jLabelPaymentMethodsBubbleTeaView.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabelPaymentMethodsBubbleTeaView.setText("      Phương thức thanh toán");
@@ -3440,7 +3585,7 @@ public class Manager {
         jButtonFavoriteBubbleTeaView.setBackground(new java.awt.Color(255, 0, 51));
         jButtonFavoriteBubbleTeaView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\Favorite.png")); // NOI18N
         jButtonFavoriteBubbleTeaView.setBorder(null);
-        jButtonFavoriteBubbleTeaView.addActionListener(new BubbleTeaListener());
+        jButtonFavoriteBubbleTeaView.addActionListener(new BubbleTeaListener(this));
 
         jLabelPositionBubbleTeaView.setBackground(new java.awt.Color(255, 153, 51));
         jLabelPositionBubbleTeaView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -3668,7 +3813,7 @@ public class Manager {
         jLabelSumBreadView.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabelSumBreadView.setText("Tổng:");
 
-        jLabelMoneyBreadView.setText("                                                   0 ");
+        jLabelMoneyBreadView.setText("                                                   0");
         jLabelMoneyBreadView.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabelVNDBreadView.setText("VNĐ");
@@ -3676,7 +3821,7 @@ public class Manager {
         jButtonAddBreadView.setBackground(new java.awt.Color(255, 255, 0));
         jButtonAddBreadView.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButtonAddBreadView.setText("Thêm");
-        jButtonAddBreadView.addActionListener(new BreadListener());
+        jButtonAddBreadView.addActionListener(new BreadListener(this));
 
         jTableMenuOfBread.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -3796,17 +3941,17 @@ public class Manager {
         jLabelImageBreadView.setText("jLabel1");
 
         jButtonBackBreadView.setBackground(new java.awt.Color(255, 153, 51));
-        jButtonBackBreadView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-back-64.png")); // NOI18N
+        jButtonBackBreadView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif"))); // NOI18N
         jButtonBackBreadView.setBorder(null);
-        jButtonBackBreadView.addActionListener(new BreadListener());
+        jButtonBackBreadView.addActionListener(new BreadListener(this));
 
         jButtonPayWithQRCodeBreadView.setBackground(new java.awt.Color(51, 255, 0));
         jButtonPayWithQRCodeBreadView.setText("Quét mã QR");
-        jButtonPayWithQRCodeBreadView.addActionListener(new BreadListener());
+        jButtonPayWithQRCodeBreadView.addActionListener(new BreadListener(this));
 
         jButtonPayInCashBreadView.setBackground(new java.awt.Color(102, 255, 0));
         jButtonPayInCashBreadView.setText("Sử dụng tiền mặt");
-        jButtonPayInCashBreadView.addActionListener(new BreadListener());
+        jButtonPayInCashBreadView.addActionListener(new BreadListener(this));
 
         jLabelPaymentMethodsBreadView.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabelPaymentMethodsBreadView.setText("      Phương thức thanh toán");
@@ -3939,7 +4084,7 @@ public class Manager {
         jButtonFavoriteBreadView.setBackground(new java.awt.Color(255, 0, 51));
         jButtonFavoriteBreadView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\Favorite.png")); // NOI18N
         jButtonFavoriteBreadView.setBorder(null);
-        jButtonFavoriteBreadView.addActionListener(new BreadListener());
+        jButtonFavoriteBreadView.addActionListener(new BreadListener(this));
 
         javax.swing.GroupLayout jPanelContainerBreadViewLayout = new javax.swing.GroupLayout(jPanelContainerBreadView);
         jPanelContainerBreadView.setLayout(jPanelContainerBreadViewLayout);
@@ -4024,6 +4169,7 @@ public class Manager {
         );
 
     }
+    
     private void BeerView() {
 
         jPanelBeerView = new javax.swing.JPanel();
@@ -4074,7 +4220,7 @@ public class Manager {
         jButtonAddBeerView.setBackground(new java.awt.Color(255, 255, 0));
         jButtonAddBeerView.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         jButtonAddBeerView.setText("Thêm");
-        jButtonAddBeerView.addActionListener(new BeerListener());
+        jButtonAddBeerView.addActionListener(new BeerListener(this));
 
         jTableMenuOfBeer.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -4189,10 +4335,10 @@ public class Manager {
         jLabelImageBeerView.setText("jLabel1");
 
         jButtonBackBeer.setBackground(new java.awt.Color(255, 153, 51));
-        jButtonBackBeer.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Downloads\\icons8-back-64.png")); // NOI18N
+        jButtonBackBeer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif"))); // NOI18N
         jButtonBackBeer.setName("BackBeer");
         jButtonBackBeer.setBorder(null);
-        jButtonBackBeer.addActionListener(new BeerListener());
+        jButtonBackBeer.addActionListener(new BeerListener(this));
                 
 
         jLabelPaymentMethodsBeerView.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -4200,11 +4346,11 @@ public class Manager {
 
         jButtonPayWithQRCodeBeerView.setBackground(new java.awt.Color(102, 255, 0));
         jButtonPayWithQRCodeBeerView.setText("Quét mã QR");
-        jButtonPayWithQRCodeBeerView.addActionListener(new BeerListener());
+        jButtonPayWithQRCodeBeerView.addActionListener(new BeerListener(this));
 
         jButtonPayInCashBeerView.setBackground(new java.awt.Color(102, 255, 0));
         jButtonPayInCashBeerView.setText("Sử dụng tiền mặt");
-        jButtonPayInCashBeerView.addActionListener(new BeerListener());
+        jButtonPayInCashBeerView.addActionListener(new BeerListener(this));
 
         javax.swing.GroupLayout jPanelPaymentMethodsBeerViewLayout = new javax.swing.GroupLayout(jPanelPaymentMethodsBeerView);
         jPanelPaymentMethodsBeerView.setLayout(jPanelPaymentMethodsBeerViewLayout);
@@ -4336,7 +4482,7 @@ public class Manager {
         jButtonFavoriteBeerView.setBackground(new java.awt.Color(255, 0, 51));
         jButtonFavoriteBeerView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\Favorite.png")); // NOI18N
         jButtonFavoriteBeerView.setBorder(null);
-        jButtonFavoriteBeerView.addActionListener(new BeerListener());
+        jButtonFavoriteBeerView.addActionListener(new BeerListener(this));
 
         javax.swing.GroupLayout jPanelContainerBeerViewLayout = new javax.swing.GroupLayout(jPanelContainerBeerView);
         jPanelContainerBeerView.setLayout(jPanelContainerBeerViewLayout);
@@ -4417,6 +4563,1791 @@ public class Manager {
                     .addGap(36, 36, 36)))
         );
     }
+    
+    private void DiscountCodeView() {
+
+        jPanelDiscountCodeView = new javax.swing.JPanel();
+        jTabbedFooterDiscountCodeView = new javax.swing.JTabbedPane();
+        jPanelTotalDiscountCodeView = new javax.swing.JPanel();
+        jScrollPaneTotalDiscountCodeView = new javax.swing.JScrollPane();
+        jTableTotalDiscountCodeView = new javax.swing.JTable();
+        jPanelBeerDiscountCodeView = new javax.swing.JPanel();
+        jScrollPaneBeerDiscountCodeView = new javax.swing.JScrollPane();
+        jTableBeerDiscountCodeView = new javax.swing.JTable();
+        jPanelBreadDiscountCodeView = new javax.swing.JPanel();
+        jScrollPaneBreadDiscountCodeView = new javax.swing.JScrollPane();
+        jTableBreadDiscountCodeView = new javax.swing.JTable();
+        jPanelBubbleTeaDiscountCodeView = new javax.swing.JPanel();
+        jScrollPaneBubbleTeaDiscountCodeView = new javax.swing.JScrollPane();
+        jTableBubbleTeaDiscountCodeView = new javax.swing.JTable();
+        jPanelCoffeeDiscountCodeView = new javax.swing.JPanel();
+        jScrollPaneCoffeeDiscountCodeView = new javax.swing.JScrollPane();
+        jTableCoffeeDiscountCodeView = new javax.swing.JTable();
+        jPanelHotdogDiscountCodeView = new javax.swing.JPanel();
+        jScrollPaneHamburgerDiscountCodeView = new javax.swing.JScrollPane();
+        jTableHamburgerDiscountCodeView = new javax.swing.JTable();
+        jPanelKFCDiscountCodeView = new javax.swing.JPanel();
+        jScrollPaneHotdogDiscountCodeView = new javax.swing.JScrollPane();
+        jTableHotdogDiscountCodeView = new javax.swing.JTable();
+        jPanelHamburgerDiscountCodeView = new javax.swing.JPanel();
+        jScrollPaneKFCDiscountCodeView = new javax.swing.JScrollPane();
+        jTableKFCDiscountCodeView = new javax.swing.JTable();
+        jPanelDiscountCodeHeader = new javax.swing.JPanel();
+        jLabelImageHeaderDiscountCodeView = new javax.swing.JLabel();
+        jButtonBackDiscountCodeView = new javax.swing.JButton();
+        jLabelLoudSpeakerDiscountCodeView = new javax.swing.JLabel();
+
+        jPanelDiscountCodeView.setBackground(new java.awt.Color(255, 153, 51));
+
+        jTabbedFooterDiscountCodeView.setBackground(new java.awt.Color(51, 255, 51));
+
+        jTableTotalDiscountCodeView.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Số thứ tự", "Tên", "Mã", "Giảm giá (%)", "Đơn hàng tối thiểu (VNĐ)", "Hạn sử dụng"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableTotalDiscountCodeView.setShowGrid(true);
+        jTableTotalDiscountCodeView.setSurrendersFocusOnKeystroke(true);
+        jScrollPaneTotalDiscountCodeView.setViewportView(jTableTotalDiscountCodeView);
+        if (jTableTotalDiscountCodeView.getColumnModel().getColumnCount() > 0) {
+            jTableTotalDiscountCodeView.getColumnModel().getColumn(0).setResizable(false);
+            jTableTotalDiscountCodeView.getColumnModel().getColumn(1).setResizable(false);
+            jTableTotalDiscountCodeView.getColumnModel().getColumn(2).setResizable(false);
+            jTableTotalDiscountCodeView.getColumnModel().getColumn(3).setResizable(false);
+            jTableTotalDiscountCodeView.getColumnModel().getColumn(4).setResizable(false);
+            jTableTotalDiscountCodeView.getColumnModel().getColumn(5).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanelTotalDiscountCodeViewLayout = new javax.swing.GroupLayout(jPanelTotalDiscountCodeView);
+        jPanelTotalDiscountCodeView.setLayout(jPanelTotalDiscountCodeViewLayout);
+        jPanelTotalDiscountCodeViewLayout.setHorizontalGroup(
+            jPanelTotalDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneTotalDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
+        );
+        jPanelTotalDiscountCodeViewLayout.setVerticalGroup(
+            jPanelTotalDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneTotalDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+        );
+
+        jTabbedFooterDiscountCodeView.addTab("Tổng hợp", jPanelTotalDiscountCodeView);
+
+        jTableBeerDiscountCodeView.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"1", "BEC001", "20%", "30.000 VNĐ", "Hết hạn"},
+                {"2", "BEC002", "15%", "15.000 VNĐ", "Hết hạn"},
+                {"3", "BEC003", "70%", "100.000 VNĐ", "Hết hạn"},
+                {"4", "BEC004", "99%", "200.000 VNĐ", "Hết hạn"},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Số thứ tự", "Mã", "Giảm giá (%)", "Đơn hàng tối thiểu (VNĐ)", "Hiệu lực"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableBeerDiscountCodeView.setShowGrid(true);
+        jScrollPaneBeerDiscountCodeView.setViewportView(jTableBeerDiscountCodeView);
+        if (jTableBeerDiscountCodeView.getColumnModel().getColumnCount() > 0) {
+            jTableBeerDiscountCodeView.getColumnModel().getColumn(0).setResizable(false);
+            jTableBeerDiscountCodeView.getColumnModel().getColumn(1).setResizable(false);
+            jTableBeerDiscountCodeView.getColumnModel().getColumn(2).setResizable(false);
+            jTableBeerDiscountCodeView.getColumnModel().getColumn(3).setResizable(false);
+            jTableBeerDiscountCodeView.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanelBeerDiscountCodeViewLayout = new javax.swing.GroupLayout(jPanelBeerDiscountCodeView);
+        jPanelBeerDiscountCodeView.setLayout(jPanelBeerDiscountCodeViewLayout);
+        jPanelBeerDiscountCodeViewLayout.setHorizontalGroup(
+            jPanelBeerDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneBeerDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
+        );
+        jPanelBeerDiscountCodeViewLayout.setVerticalGroup(
+            jPanelBeerDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneBeerDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+        );
+
+        jTabbedFooterDiscountCodeView.addTab("Bia", jPanelBeerDiscountCodeView);
+
+        jTableBreadDiscountCodeView.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"1", "BRC001", "20%", "30.000 VNĐ", "Hết hạn"},
+                {"2", "BRC002", "35%", "15.000 VNĐ", "Hết hạn"},
+                {"3", "BRC003", "65%", "100.000 VNĐ", "Hết hạn"},
+                {"4", "BRC004", "10%", "200.000 VNĐ", "Còn hạn"},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Số thứ tự", "Mã", "Giảm giá (%)", "Đơn hàng tối thiểu (VNĐ)", "Hiệu lực"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableBreadDiscountCodeView.setShowGrid(true);
+        jScrollPaneBreadDiscountCodeView.setViewportView(jTableBreadDiscountCodeView);
+        if (jTableBreadDiscountCodeView.getColumnModel().getColumnCount() > 0) {
+            jTableBreadDiscountCodeView.getColumnModel().getColumn(0).setResizable(false);
+            jTableBreadDiscountCodeView.getColumnModel().getColumn(1).setResizable(false);
+            jTableBreadDiscountCodeView.getColumnModel().getColumn(2).setResizable(false);
+            jTableBreadDiscountCodeView.getColumnModel().getColumn(3).setResizable(false);
+            jTableBreadDiscountCodeView.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanelBreadDiscountCodeViewLayout = new javax.swing.GroupLayout(jPanelBreadDiscountCodeView);
+        jPanelBreadDiscountCodeView.setLayout(jPanelBreadDiscountCodeViewLayout);
+        jPanelBreadDiscountCodeViewLayout.setHorizontalGroup(
+            jPanelBreadDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneBreadDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
+        );
+        jPanelBreadDiscountCodeViewLayout.setVerticalGroup(
+            jPanelBreadDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneBreadDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+        );
+
+        jTabbedFooterDiscountCodeView.addTab("Bánh mì", jPanelBreadDiscountCodeView);
+
+        jTableBubbleTeaDiscountCodeView.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"1", "BUC001", "30%", "150.000 VNĐ", "Hết hạn"},
+                {"2", "BUC002", "15%", "70.000 VNĐ", "Còn hạn"},
+                {"3", "BUC003", "5%", "100.000 VNĐ", "Hết hạn"},
+                {"4", "BUC004", "7%", "200.000 VNĐ", "Còn hạn"},
+                {"5", "BUC005", "40%", "450.000", "Còn hạn"},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Số thứ tự", "Mã", "Giảm giá (%)", "Đơn hàng tối thiểu (VNĐ)", "Hiệu lực"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableBubbleTeaDiscountCodeView.setShowGrid(true);
+        jScrollPaneBubbleTeaDiscountCodeView.setViewportView(jTableBubbleTeaDiscountCodeView);
+        if (jTableBubbleTeaDiscountCodeView.getColumnModel().getColumnCount() > 0) {
+            jTableBubbleTeaDiscountCodeView.getColumnModel().getColumn(0).setResizable(false);
+            jTableBubbleTeaDiscountCodeView.getColumnModel().getColumn(1).setResizable(false);
+            jTableBubbleTeaDiscountCodeView.getColumnModel().getColumn(2).setResizable(false);
+            jTableBubbleTeaDiscountCodeView.getColumnModel().getColumn(3).setResizable(false);
+            jTableBubbleTeaDiscountCodeView.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanelBubbleTeaDiscountCodeViewLayout = new javax.swing.GroupLayout(jPanelBubbleTeaDiscountCodeView);
+        jPanelBubbleTeaDiscountCodeView.setLayout(jPanelBubbleTeaDiscountCodeViewLayout);
+        jPanelBubbleTeaDiscountCodeViewLayout.setHorizontalGroup(
+            jPanelBubbleTeaDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneBubbleTeaDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
+        );
+        jPanelBubbleTeaDiscountCodeViewLayout.setVerticalGroup(
+            jPanelBubbleTeaDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneBubbleTeaDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+        );
+
+        jTabbedFooterDiscountCodeView.addTab("Trà sữa", jPanelBubbleTeaDiscountCodeView);
+
+        jTableCoffeeDiscountCodeView.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"1", "COC001", "20%", "150.000 VNĐ", "Còn hạn"},
+                {"2", "COC002", "15%", "45.000 VNĐ", "Còn hạn"},
+                {"3", "COC003", "50%", "200.000 VNĐ", "Còn hạn"},
+                {"4", "COC004", "30%", "60.000 VNĐ", "Còn hạn"},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Số thứ tự", "Mã", "Giảm giá (%)", "Đơn hàng tối thiểu (VNĐ)", "Hiệu lực"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableCoffeeDiscountCodeView.setShowGrid(true);
+        jScrollPaneCoffeeDiscountCodeView.setViewportView(jTableCoffeeDiscountCodeView);
+        if (jTableCoffeeDiscountCodeView.getColumnModel().getColumnCount() > 0) {
+            jTableCoffeeDiscountCodeView.getColumnModel().getColumn(0).setResizable(false);
+            jTableCoffeeDiscountCodeView.getColumnModel().getColumn(1).setResizable(false);
+            jTableCoffeeDiscountCodeView.getColumnModel().getColumn(2).setResizable(false);
+            jTableCoffeeDiscountCodeView.getColumnModel().getColumn(3).setResizable(false);
+            jTableCoffeeDiscountCodeView.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanelCoffeeDiscountCodeViewLayout = new javax.swing.GroupLayout(jPanelCoffeeDiscountCodeView);
+        jPanelCoffeeDiscountCodeView.setLayout(jPanelCoffeeDiscountCodeViewLayout);
+        jPanelCoffeeDiscountCodeViewLayout.setHorizontalGroup(
+            jPanelCoffeeDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneCoffeeDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
+        );
+        jPanelCoffeeDiscountCodeViewLayout.setVerticalGroup(
+            jPanelCoffeeDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneCoffeeDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+        );
+
+        jTabbedFooterDiscountCodeView.addTab("Cà phê", jPanelCoffeeDiscountCodeView);
+
+        jTableHamburgerDiscountCodeView.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"1", "HAC001", "20%", "70.000 VNĐ", "Hết hạn"},
+                {"2", "HAC002", "15%", "150.000 VNĐ", "Còn hạn"},
+                {"3", "HAC003", "30%", "250.000 VNĐ", "Còn hạn"},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Số thứ tự", "Mã", "Giảm giá (%)", "Đơn hàng tối thiểu (VNĐ)", "Hiệu lực"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableHamburgerDiscountCodeView.setShowGrid(true);
+        jScrollPaneHamburgerDiscountCodeView.setViewportView(jTableHamburgerDiscountCodeView);
+        if (jTableHamburgerDiscountCodeView.getColumnModel().getColumnCount() > 0) {
+            jTableHamburgerDiscountCodeView.getColumnModel().getColumn(0).setResizable(false);
+            jTableHamburgerDiscountCodeView.getColumnModel().getColumn(1).setResizable(false);
+            jTableHamburgerDiscountCodeView.getColumnModel().getColumn(2).setResizable(false);
+            jTableHamburgerDiscountCodeView.getColumnModel().getColumn(3).setResizable(false);
+            jTableHamburgerDiscountCodeView.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanelHotdogDiscountCodeViewLayout = new javax.swing.GroupLayout(jPanelHotdogDiscountCodeView);
+        jPanelHotdogDiscountCodeView.setLayout(jPanelHotdogDiscountCodeViewLayout);
+        jPanelHotdogDiscountCodeViewLayout.setHorizontalGroup(
+            jPanelHotdogDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneHamburgerDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
+        );
+        jPanelHotdogDiscountCodeViewLayout.setVerticalGroup(
+            jPanelHotdogDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneHamburgerDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+        );
+
+        jTabbedFooterDiscountCodeView.addTab("Hamburger", jPanelHotdogDiscountCodeView);
+
+        jTableHotdogDiscountCodeView.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"1", "HOC001", "20%", "30.000 VNĐ", "Hết hạn"},
+                {"2", "HOC002", "15%", "15.000 VNĐ", "Hết hạn"},
+                {"3", "HOC003", "70%", "100.000 VNĐ", "Hết hạn"},
+                {"4", "HOC004", "99%", "200.000 VNĐ", "Hết hạn"},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Số thứ tự", "Mã", "Giảm giá (%)", "Đơn hàng tối thiểu (VNĐ)", "Hiệu lực"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableHotdogDiscountCodeView.setShowGrid(true);
+        jScrollPaneHotdogDiscountCodeView.setViewportView(jTableHotdogDiscountCodeView);
+        if (jTableHotdogDiscountCodeView.getColumnModel().getColumnCount() > 0) {
+            jTableHotdogDiscountCodeView.getColumnModel().getColumn(0).setResizable(false);
+            jTableHotdogDiscountCodeView.getColumnModel().getColumn(1).setResizable(false);
+            jTableHotdogDiscountCodeView.getColumnModel().getColumn(2).setResizable(false);
+            jTableHotdogDiscountCodeView.getColumnModel().getColumn(3).setResizable(false);
+            jTableHotdogDiscountCodeView.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanelKFCDiscountCodeViewLayout = new javax.swing.GroupLayout(jPanelKFCDiscountCodeView);
+        jPanelKFCDiscountCodeView.setLayout(jPanelKFCDiscountCodeViewLayout);
+        jPanelKFCDiscountCodeViewLayout.setHorizontalGroup(
+            jPanelKFCDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneHotdogDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
+        );
+        jPanelKFCDiscountCodeViewLayout.setVerticalGroup(
+            jPanelKFCDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneHotdogDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+        );
+
+        jTabbedFooterDiscountCodeView.addTab("Hotdog", jPanelKFCDiscountCodeView);
+
+        jTableKFCDiscountCodeView.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"1", "KFC001", "5%", "120.000 VNĐ", "Còn hạn"},
+                {"2", "KFC002", "15%", "150.000 VNĐ", "Hết hạn"},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Số thứ tự", "Mã", "Giảm giá (%)", "Đơn hàng tối thiểu (VNĐ)", "Hiệu lực"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableKFCDiscountCodeView.setShowGrid(true);
+        jScrollPaneKFCDiscountCodeView.setViewportView(jTableKFCDiscountCodeView);
+        if (jTableKFCDiscountCodeView.getColumnModel().getColumnCount() > 0) {
+            jTableKFCDiscountCodeView.getColumnModel().getColumn(0).setResizable(false);
+            jTableKFCDiscountCodeView.getColumnModel().getColumn(1).setResizable(false);
+            jTableKFCDiscountCodeView.getColumnModel().getColumn(2).setResizable(false);
+            jTableKFCDiscountCodeView.getColumnModel().getColumn(3).setResizable(false);
+            jTableKFCDiscountCodeView.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        javax.swing.GroupLayout jPanelHamburgerDiscountCodeViewLayout = new javax.swing.GroupLayout(jPanelHamburgerDiscountCodeView);
+        jPanelHamburgerDiscountCodeView.setLayout(jPanelHamburgerDiscountCodeViewLayout);
+        jPanelHamburgerDiscountCodeViewLayout.setHorizontalGroup(
+            jPanelHamburgerDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneKFCDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE)
+        );
+        jPanelHamburgerDiscountCodeViewLayout.setVerticalGroup(
+            jPanelHamburgerDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPaneKFCDiscountCodeView, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+        );
+
+        jTabbedFooterDiscountCodeView.addTab("Gà rán KFC", jPanelHamburgerDiscountCodeView);
+
+        jPanelDiscountCodeHeader.setBackground(new java.awt.Color(255, 153, 51));
+
+        jLabelImageHeaderDiscountCodeView.setBackground(new java.awt.Color(255, 153, 51));
+        jLabelImageHeaderDiscountCodeView.setFont(new java.awt.Font("Segoe UI", 1, 48)); // NOI18N
+        jLabelImageHeaderDiscountCodeView.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelImageHeaderDiscountCodeView.setText("      Siêu mã giảm giá");
+
+        jButtonBackDiscountCodeView.setBackground(new java.awt.Color(255, 153, 51));
+        jButtonBackDiscountCodeView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif"))); // NOI18N
+        jButtonBackDiscountCodeView.setBorder(null);
+        jButtonBackDiscountCodeView.addActionListener(new DiscountCodeViewListener(this));
+
+        jLabelLoudSpeakerDiscountCodeView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\Loud Speaker.png")); // NOI18N
+
+        javax.swing.GroupLayout jPanelDiscountCodeHeaderLayout = new javax.swing.GroupLayout(jPanelDiscountCodeHeader);
+        jPanelDiscountCodeHeader.setLayout(jPanelDiscountCodeHeaderLayout);
+        jPanelDiscountCodeHeaderLayout.setHorizontalGroup(
+            jPanelDiscountCodeHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDiscountCodeHeaderLayout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabelLoudSpeakerDiscountCodeView, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelImageHeaderDiscountCodeView, javax.swing.GroupLayout.PREFERRED_SIZE, 624, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonBackDiscountCodeView, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanelDiscountCodeHeaderLayout.setVerticalGroup(
+            jPanelDiscountCodeHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDiscountCodeHeaderLayout.createSequentialGroup()
+                .addComponent(jButtonBackDiscountCodeView, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDiscountCodeHeaderLayout.createSequentialGroup()
+                .addContainerGap(17, Short.MAX_VALUE)
+                .addComponent(jLabelImageHeaderDiscountCodeView, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDiscountCodeHeaderLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabelLoudSpeakerDiscountCodeView, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        javax.swing.GroupLayout jPanelDiscountCodeViewLayout = new javax.swing.GroupLayout(jPanelDiscountCodeView);
+        jPanelDiscountCodeView.setLayout(jPanelDiscountCodeViewLayout);
+        jPanelDiscountCodeViewLayout.setHorizontalGroup(
+            jPanelDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedFooterDiscountCodeView)
+            .addComponent(jPanelDiscountCodeHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanelDiscountCodeViewLayout.setVerticalGroup(
+            jPanelDiscountCodeViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDiscountCodeViewLayout.createSequentialGroup()
+                .addComponent(jPanelDiscountCodeHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(jTabbedFooterDiscountCodeView, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+    }
+    
+    private void CartView() {
+
+        jPanelCartView = new javax.swing.JPanel();
+        jPanelHorizontalCartView = new javax.swing.JPanel();
+        jButtonBackCartView = new javax.swing.JButton();
+        jLabelWordCartView = new javax.swing.JLabel();
+        jLabelNameAppCartView = new javax.swing.JLabel();
+        jLabelImageCartView = new javax.swing.JLabel();
+        jPanelVerticalCartView = new javax.swing.JPanel();
+        jPanelInCashCartView = new javax.swing.JPanel();
+        jLabelInCashCartView = new javax.swing.JLabel();
+        jPanelQRCartView = new javax.swing.JPanel();
+        jLabelQRCartView = new javax.swing.JLabel();
+        jLabelCartImageCartView = new javax.swing.JLabel();
+        jDesktopPanelCartView = new javax.swing.JDesktopPane();
+
+
+        jPanelHorizontalCartView.setBackground(new java.awt.Color(255, 153, 51));
+
+        jButtonBackCartView.setBackground(new java.awt.Color(255, 153, 51));
+        jButtonBackCartView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif"))); // NOI18N
+        jButtonBackCartView.setBorder(null);
+        jButtonBackCartView.addActionListener(new CartListener(this));
+
+        jLabelWordCartView.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelWordCartView.setText("Thanh toán bằng tiền mặt");
+
+        jLabelNameAppCartView.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabelNameAppCartView.setText(" FastFood App");
+
+        jLabelImageCartView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-cash.gif")); // NOI18N
+
+        javax.swing.GroupLayout jPanelHorizontalCartViewLayout = new javax.swing.GroupLayout(jPanelHorizontalCartView);
+        jPanelHorizontalCartView.setLayout(jPanelHorizontalCartViewLayout);
+        jPanelHorizontalCartViewLayout.setHorizontalGroup(
+            jPanelHorizontalCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelHorizontalCartViewLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabelImageCartView, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelWordCartView, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelHorizontalCartViewLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonBackCartView, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
+            .addGroup(jPanelHorizontalCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelHorizontalCartViewLayout.createSequentialGroup()
+                    .addGap(10, 10, 10)
+                    .addComponent(jLabelNameAppCartView, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(559, Short.MAX_VALUE)))
+        );
+        jPanelHorizontalCartViewLayout.setVerticalGroup(
+            jPanelHorizontalCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelHorizontalCartViewLayout.createSequentialGroup()
+                .addComponent(jButtonBackCartView, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelHorizontalCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelWordCartView, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelImageCartView))
+                .addContainerGap(14, Short.MAX_VALUE))
+            .addGroup(jPanelHorizontalCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelHorizontalCartViewLayout.createSequentialGroup()
+                    .addComponent(jLabelNameAppCartView, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 53, Short.MAX_VALUE)))
+        );
+
+        jPanelVerticalCartView.setBackground(new java.awt.Color(13, 36, 51));
+
+        jPanelInCashCartView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanelInCashCartViewMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanelInCashCartViewMousePressed(evt);
+            }
+        });
+
+        jLabelInCashCartView.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabelInCashCartView.setForeground(new java.awt.Color(102, 255, 0));
+        jLabelInCashCartView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-cash.gif"))); // NOI18N
+        jLabelInCashCartView.setText("Thanh toán bằng tiền mặt");
+
+        javax.swing.GroupLayout jPanelInCashCartViewLayout = new javax.swing.GroupLayout(jPanelInCashCartView);
+        jPanelInCashCartView.setLayout(jPanelInCashCartViewLayout);
+        jPanelInCashCartViewLayout.setHorizontalGroup(
+            jPanelInCashCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelInCashCartView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+        );
+        jPanelInCashCartViewLayout.setVerticalGroup(
+            jPanelInCashCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelInCashCartView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+        );
+
+        jPanelQRCartView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanelQRCartViewMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanelQRCartViewMousePressed(evt);
+            }
+        });
+
+        jLabelQRCartView.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabelQRCartView.setForeground(new java.awt.Color(0, 0, 255));
+        jLabelQRCartView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-qr-code.gif"))); // NOI18N
+        jLabelQRCartView.setText("  Quét mã QR");
+
+        javax.swing.GroupLayout jPanelQRCartViewLayout = new javax.swing.GroupLayout(jPanelQRCartView);
+        jPanelQRCartView.setLayout(jPanelQRCartViewLayout);
+        jPanelQRCartViewLayout.setHorizontalGroup(
+            jPanelQRCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelQRCartView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanelQRCartViewLayout.setVerticalGroup(
+            jPanelQRCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelQRCartView, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+        );
+
+        jLabelCartImageCartView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-shopping-cart-96.png"))); // NOI18N
+        jLabelCartImageCartView.setText("jLabel3");
+
+        javax.swing.GroupLayout jPanelVerticalCartViewLayout = new javax.swing.GroupLayout(jPanelVerticalCartView);
+        jPanelVerticalCartView.setLayout(jPanelVerticalCartViewLayout);
+        jPanelVerticalCartViewLayout.setHorizontalGroup(
+            jPanelVerticalCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelVerticalCartViewLayout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addComponent(jLabelCartImageCartView, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanelVerticalCartViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelVerticalCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelInCashCartView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelQRCartView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanelVerticalCartViewLayout.setVerticalGroup(
+            jPanelVerticalCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelVerticalCartViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelCartImageCartView, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanelInCashCartView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanelQRCartView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(232, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jDesktopPanelCartViewLayout = new javax.swing.GroupLayout(jDesktopPanelCartView);
+        jDesktopPanelCartView.setLayout(jDesktopPanelCartViewLayout);
+        jDesktopPanelCartViewLayout.setHorizontalGroup(
+            jDesktopPanelCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 663, Short.MAX_VALUE)
+        );
+        jDesktopPanelCartViewLayout.setVerticalGroup(
+            jDesktopPanelCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanelCartViewLayout = new javax.swing.GroupLayout(jPanelCartView);
+        jPanelCartView.setLayout(jPanelCartViewLayout);
+        jPanelCartViewLayout.setHorizontalGroup(
+            jPanelCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanelCartViewLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanelCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jPanelHorizontalCartView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanelCartViewLayout.createSequentialGroup()
+                        .addComponent(jPanelVerticalCartView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDesktopPanelCartView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanelCartViewLayout.setVerticalGroup(
+            jPanelCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelCartViewLayout.createSequentialGroup()
+                .addComponent(jPanelHorizontalCartView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelCartViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelVerticalCartView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jDesktopPanelCartView)))
+        );
+        DefaultColorCartView = new Color(13,36,51);
+        DefaultColorBillView = new Color(255,255,255);
+        clickedColorCartView = new Color(255,153,51);
+        
+        jPanelInCashCartView.setBackground(DefaultColorCartView);
+        jPanelQRCartView.setBackground(DefaultColorCartView);
+    }
+    
+    private void BillView() {
+
+        jPanelBillView = new javax.swing.JPanel();
+        jPanelHorizontalBillView = new javax.swing.JPanel();
+        jButtonBackBillView = new javax.swing.JButton();
+        jLabelNameAppBillView = new javax.swing.JLabel();
+        jPanelWordBillView = new javax.swing.JPanel();
+        jLabelWordBillView = new javax.swing.JLabel();
+        jPanelCenterBillView = new javax.swing.JPanel();
+        jScrollPaneBillView = new javax.swing.JScrollPane();
+        jTextAreaCenterBillView = new javax.swing.JTextArea();
+        jPanelVerticalLeftBillView = new javax.swing.JPanel();
+        jPanelTotalBillView = new javax.swing.JPanel();
+        jLabelTotalBillView = new javax.swing.JLabel();
+        jPanelReceiptBillView = new javax.swing.JPanel();
+        jLabelReceiptBillView = new javax.swing.JLabel();
+        jPanelResetBillView = new javax.swing.JPanel();
+        jLabelResetBillView = new javax.swing.JLabel();
+        jLabelPROPTITBillView = new javax.swing.JLabel();
+        jPanelVerticalRightBillView = new javax.swing.JPanel();
+        jLabelTimeBillView = new javax.swing.JLabel();
+        jLabelDateBillView = new javax.swing.JLabel();
+
+
+        jPanelHorizontalBillView.setBackground(new java.awt.Color(255, 153, 51));
+
+        jButtonBackBillView.setBackground(new java.awt.Color(255, 153, 51));
+        jButtonBackBillView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif"))); // NOI18N
+        jButtonBackBillView.setBorder(null);
+        jButtonBackBillView.addActionListener(new BillListener(this));
+
+        jLabelNameAppBillView.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabelNameAppBillView.setText(" FastFood");
+
+        jPanelWordBillView.setBackground(new java.awt.Color(255, 153, 51));
+        jPanelWordBillView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                //jPanelWordBillViewMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                //jPanelWordBillViewMousePressed(evt);
+            }
+        });
+
+        jLabelWordBillView.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelWordBillView.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelWordBillView.setForeground(new java.awt.Color(0, 102, 255));
+        jLabelWordBillView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-cheque.gif"))); // NOI18N
+        jLabelWordBillView.setText("Hóa đơn thanh toán");
+
+        javax.swing.GroupLayout jPanelWordBillViewLayout = new javax.swing.GroupLayout(jPanelWordBillView);
+        jPanelWordBillView.setLayout(jPanelWordBillViewLayout);
+        jPanelWordBillViewLayout.setHorizontalGroup(
+            jPanelWordBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelWordBillViewLayout.createSequentialGroup()
+                .addComponent(jLabelWordBillView, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 57, Short.MAX_VALUE))
+        );
+        jPanelWordBillViewLayout.setVerticalGroup(
+            jPanelWordBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelWordBillView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanelHorizontalBillViewLayout = new javax.swing.GroupLayout(jPanelHorizontalBillView);
+        jPanelHorizontalBillView.setLayout(jPanelHorizontalBillViewLayout);
+        jPanelHorizontalBillViewLayout.setHorizontalGroup(
+            jPanelHorizontalBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelHorizontalBillViewLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonBackBillView, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
+            .addGroup(jPanelHorizontalBillViewLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jPanelWordBillView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanelHorizontalBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelHorizontalBillViewLayout.createSequentialGroup()
+                    .addGap(10, 10, 10)
+                    .addComponent(jLabelNameAppBillView, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(553, Short.MAX_VALUE)))
+        );
+        jPanelHorizontalBillViewLayout.setVerticalGroup(
+            jPanelHorizontalBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelHorizontalBillViewLayout.createSequentialGroup()
+                .addComponent(jButtonBackBillView, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelWordBillView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanelHorizontalBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelHorizontalBillViewLayout.createSequentialGroup()
+                    .addComponent(jLabelNameAppBillView, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 67, Short.MAX_VALUE)))
+        );
+
+        jTextAreaCenterBillView.setColumns(20);
+        jTextAreaCenterBillView.setText("");
+        jTextAreaCenterBillView.setRows(5);
+        jScrollPaneBillView.setViewportView(jTextAreaCenterBillView);
+
+        javax.swing.GroupLayout jPanelCenterBillViewLayout = new javax.swing.GroupLayout(jPanelCenterBillView);
+        jPanelCenterBillView.setLayout(jPanelCenterBillViewLayout);
+        jPanelCenterBillViewLayout.setHorizontalGroup(
+            jPanelCenterBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelCenterBillViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPaneBillView, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelCenterBillViewLayout.setVerticalGroup(
+            jPanelCenterBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCenterBillViewLayout.createSequentialGroup()
+                .addComponent(jScrollPaneBillView)
+                .addContainerGap())
+        );
+
+        jPanelVerticalLeftBillView.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanelTotalBillView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    sumMoney=sumMoneyBeer+sumMoneyBread+sumMoneyBubbleTea+sumMoneyCoffee+sumMoneyHamburger+sumMoneyHotdog+sumMoneyKFC+sumMoneyPizza;
+                    numberInBill= numberBeerInBill+numberBreadInBill+numberBubbleTeaInBill+numberCoffeeInBill+numberHamburgerInBill+numberHamburgerInBill+numberHotdogInBill+numberKFCInBill+numberPizzaInBill;
+                    DecimalFormat formatAddComma = new DecimalFormat("#,###");
+                    String formattedNumberAddComma = formatAddComma.format(sumMoney);
+                    String sumMoneyAddSpace = String.format("%1$20s", formattedNumberAddComma).replace(' ', ' ');
+                    footerBill=  "    -------------------------------------------------------------------------------------------\n"
+                                +"    TỔNG CỘNG\t\t "+sumMoneyAddSpace+" VNĐ\n"
+                                +"    Số lượng:  "+numberInBill+"\n"
+                                +"    -------------------------------------------------------------------------------------------\n"
+                                +"\t                      Cảm ơn Quý khách\n"
+                                +"\t                            Hẹn gặp lại!\n"
+                                +"\t                 Phiếu tính tiền chỉ có giá trị\n"
+                                +"\t              xuất hóa đơn GTGT trong ngày\n";
+                    
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanelResetBillView.setBackground(DefaultColorBillView);
+                jPanelReceiptBillView.setBackground(DefaultColorBillView);
+                jPanelTotalBillView.setBackground(clickedColorCartView);
+            }
+        });
+        
+        jPanelTotalBillView.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelTotalBillView.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jLabelTotalBillView.setBackground(new java.awt.Color(13, 36, 51));
+        jLabelTotalBillView.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabelTotalBillView.setForeground(new java.awt.Color(0, 0, 255));
+        jLabelTotalBillView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-calculator.gif"))); // NOI18N
+        jLabelTotalBillView.setText("Total");
+
+        javax.swing.GroupLayout jPanelTotalBillViewLayout = new javax.swing.GroupLayout(jPanelTotalBillView);
+        jPanelTotalBillView.setLayout(jPanelTotalBillViewLayout);
+        jPanelTotalBillViewLayout.setHorizontalGroup(
+            jPanelTotalBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelTotalBillView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanelTotalBillViewLayout.setVerticalGroup(
+            jPanelTotalBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelTotalBillView)
+        );
+
+        jPanelReceiptBillView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                try {
+                    jTextAreaCenterBillView.print();
+                } catch (PrinterException ex) {
+                    Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanelResetBillView.setBackground(DefaultColorBillView);
+                jPanelReceiptBillView.setBackground(clickedColorCartView);
+                jPanelTotalBillView.setBackground(DefaultColorBillView);
+            }
+        });
+        jPanelReceiptBillView.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelReceiptBillView.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jLabelReceiptBillView.setBackground(new java.awt.Color(13, 36, 51));
+        jLabelReceiptBillView.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabelReceiptBillView.setForeground(new java.awt.Color(0, 0, 255));
+        jLabelReceiptBillView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-tasks.gif"))); // NOI18N
+        jLabelReceiptBillView.setText("Receipt");
+
+        javax.swing.GroupLayout jPanelReceiptBillViewLayout = new javax.swing.GroupLayout(jPanelReceiptBillView);
+        jPanelReceiptBillView.setLayout(jPanelReceiptBillViewLayout);
+        jPanelReceiptBillViewLayout.setHorizontalGroup(
+            jPanelReceiptBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelReceiptBillView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanelReceiptBillViewLayout.setVerticalGroup(
+            jPanelReceiptBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelReceiptBillView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanelResetBillView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                
+                //Reset Beer
+                jLabelMoneyBeerView.setText("0");
+                for (int i = 0; i < jTableMenuOfBeer.getRowCount(); i++) {
+                     jTableMenuOfBeer.setValueAt(0, i, 3);
+                }
+                beerWriteBill="";
+                
+                //Reset Bread
+                jLabelMoneyBreadView.setText("0");
+                for (int i = 0; i < jTableMenuOfBread.getRowCount(); i++) {
+                     jTableMenuOfBread.setValueAt(0, i, 3);
+                }
+                breadWriteBill="";
+                
+                //Reset BubbleTea
+                jLabelMoneyBubbleTeaView.setText("0");
+                for (int i = 0; i < jTableMenuOfBubbleTea.getRowCount(); i++) {
+                     jTableMenuOfBubbleTea.setValueAt(0, i, 3);
+                }
+                bubbleTeaWriteBill="";
+                
+                //Reset Coffee
+                jLabelMoneyCoffeeView.setText("0");
+                for (int i = 0; i < jTableMenuOfCoffee.getRowCount(); i++) {
+                     jTableMenuOfCoffee.setValueAt(0, i, 3);
+                }
+                coffeeWriteBill="";
+                
+                //Reset Hamburger
+                jLabelMoneyHamburgerView.setText("0");
+                for (int i = 0; i < jTableMenuOfHamburger.getRowCount(); i++) {
+                     jTableMenuOfHamburger.setValueAt(0, i, 3);
+                }
+                hamburgerWriteBill="";
+                
+                //Reset Hotdog
+                jLabelMoneyHotdogView.setText("0");
+                for (int i = 0; i < jTableMenuOfHotdog.getRowCount(); i++) {
+                     jTableMenuOfHotdog.setValueAt(0, i, 3);
+                }
+                hotdogWriteBill="";
+                
+                //Reset KFC
+                jLabelMoneyKFCView.setText("0");
+                for (int i = 0; i < jTableMenuOfKFC.getRowCount(); i++) {
+                     jTableMenuOfKFC.setValueAt(0, i, 3);
+                }
+                kfcWriteBill="";
+                
+                //Reset Pizza
+                jLabelMoneyPizzaView.setText("0");
+                for (int i = 0; i < jTableMenuOfPizza.getRowCount(); i++) {
+                     jTableMenuOfPizza.setValueAt(0, i, 3);
+                }
+                pizzaWriteBill="";
+                
+                //Reset Invoice
+                sumMoney=0;
+                numberInBill=0 ;
+                footerBill="";
+                jTextAreaCenterBillView.setText("");
+                
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPanelResetBillView.setBackground(clickedColorCartView);
+                jPanelReceiptBillView.setBackground(DefaultColorBillView);
+                jPanelTotalBillView.setBackground(DefaultColorBillView);
+            }
+        });
+        
+        jPanelResetBillView.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelResetBillView.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jLabelResetBillView.setBackground(new java.awt.Color(13, 36, 51));
+        jLabelResetBillView.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabelResetBillView.setForeground(new java.awt.Color(0, 0, 255));
+        jLabelResetBillView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-waste.gif"))); // NOI18N
+        jLabelResetBillView.setText("Reset");
+
+        javax.swing.GroupLayout jPanelResetBillViewLayout = new javax.swing.GroupLayout(jPanelResetBillView);
+        jPanelResetBillView.setLayout(jPanelResetBillViewLayout);
+        jPanelResetBillViewLayout.setHorizontalGroup(
+            jPanelResetBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelResetBillView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanelResetBillViewLayout.setVerticalGroup(
+            jPanelResetBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelResetBillView)
+        );
+
+        jLabelPROPTITBillView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/PROPTIT.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanelVerticalLeftBillViewLayout = new javax.swing.GroupLayout(jPanelVerticalLeftBillView);
+        jPanelVerticalLeftBillView.setLayout(jPanelVerticalLeftBillViewLayout);
+        jPanelVerticalLeftBillViewLayout.setHorizontalGroup(
+            jPanelVerticalLeftBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelVerticalLeftBillViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelVerticalLeftBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelTotalBillView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelReceiptBillView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelResetBillView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(jPanelVerticalLeftBillViewLayout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addComponent(jLabelPROPTITBillView)
+                .addContainerGap(64, Short.MAX_VALUE))
+        );
+        jPanelVerticalLeftBillViewLayout.setVerticalGroup(
+            jPanelVerticalLeftBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelVerticalLeftBillViewLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(jLabelPROPTITBillView, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanelTotalBillView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(jPanelReceiptBillView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addComponent(jPanelResetBillView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(153, Short.MAX_VALUE))
+        );
+
+        jPanelVerticalRightBillView.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabelTimeBillView.setBackground(new java.awt.Color(13, 36, 51));
+        jLabelTimeBillView.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabelTimeBillView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-alarm-clock.gif"))); // NOI18N
+
+        jLabelDateBillView.setBackground(new java.awt.Color(13, 36, 51));
+        jLabelDateBillView.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabelDateBillView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-calendar.gif"))); // NOI18N
+
+        javax.swing.GroupLayout jPanelVerticalRightBillViewLayout = new javax.swing.GroupLayout(jPanelVerticalRightBillView);
+        jPanelVerticalRightBillView.setLayout(jPanelVerticalRightBillViewLayout);
+        jPanelVerticalRightBillViewLayout.setHorizontalGroup(
+            jPanelVerticalRightBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelTimeBillView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabelDateBillView, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+        );
+        jPanelVerticalRightBillViewLayout.setVerticalGroup(
+            jPanelVerticalRightBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelVerticalRightBillViewLayout.createSequentialGroup()
+                .addComponent(jLabelTimeBillView)
+                .addGap(26, 26, 26)
+                .addComponent(jLabelDateBillView)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanelBillViewLayout = new javax.swing.GroupLayout(jPanelBillView);
+        jPanelBillView.setLayout(jPanelBillViewLayout);
+        jPanelBillViewLayout.setHorizontalGroup(
+            jPanelBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jPanelHorizontalBillView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanelBillViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanelVerticalLeftBillView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanelCenterBillView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelVerticalRightBillView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelBillViewLayout.setVerticalGroup(
+            jPanelBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelBillViewLayout.createSequentialGroup()
+                .addComponent(jPanelHorizontalBillView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelBillViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelVerticalLeftBillView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelCenterBillView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelVerticalRightBillView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        setTime();
+    }
+                         
+    private void UnderMaintenanceView() {
+
+        jPanelUnderMaintenance = new javax.swing.JPanel();
+        jPanelHeaderUnderMainTenance = new javax.swing.JPanel();
+        jButtonBackUnderMaintenance = new javax.swing.JButton();
+        jLabelNameAppUnderMaintenance = new javax.swing.JLabel();
+        jLabelTextUnderMaintenance = new javax.swing.JLabel();
+        jLabelImageUnderMainTenance = new javax.swing.JLabel();
+
+
+        jPanelHeaderUnderMainTenance.setBackground(new java.awt.Color(255, 153, 51));
+
+        jButtonBackUnderMaintenance.setBackground(new java.awt.Color(255, 153, 51));
+        jButtonBackUnderMaintenance.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif"))); // NOI18N
+        jButtonBackUnderMaintenance.setBorder(null);
+        jButtonBackUnderMaintenance.addActionListener(new UnderMaintaintenanceListener(this));
+
+        jLabelNameAppUnderMaintenance.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabelNameAppUnderMaintenance.setText(" FastFood App");
+
+        jLabelTextUnderMaintenance.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelTextUnderMaintenance.setText("       Chức năng chưa được cập nhật, vui lòng quay lại sau!");
+
+        javax.swing.GroupLayout jPanelHeaderUnderMainTenanceLayout = new javax.swing.GroupLayout(jPanelHeaderUnderMainTenance);
+        jPanelHeaderUnderMainTenance.setLayout(jPanelHeaderUnderMainTenanceLayout);
+        jPanelHeaderUnderMainTenanceLayout.setHorizontalGroup(
+            jPanelHeaderUnderMainTenanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelHeaderUnderMainTenanceLayout.createSequentialGroup()
+                .addComponent(jLabelNameAppUnderMaintenance, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonBackUnderMaintenance, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
+            .addGroup(jPanelHeaderUnderMainTenanceLayout.createSequentialGroup()
+                .addGap(59, 59, 59)
+                .addComponent(jLabelTextUnderMaintenance, javax.swing.GroupLayout.PREFERRED_SIZE, 696, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanelHeaderUnderMainTenanceLayout.setVerticalGroup(
+            jPanelHeaderUnderMainTenanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelHeaderUnderMainTenanceLayout.createSequentialGroup()
+                .addGroup(jPanelHeaderUnderMainTenanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelNameAppUnderMaintenance, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonBackUnderMaintenance, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelTextUnderMaintenance, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jLabelImageUnderMainTenance.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/ANH-BAO-TRI.jpg"))); // NOI18N
+
+        javax.swing.GroupLayout jPanelUnderMaintenanceLayout = new javax.swing.GroupLayout(jPanelUnderMaintenance);
+        jPanelUnderMaintenance.setLayout(jPanelUnderMaintenanceLayout);
+        jPanelUnderMaintenanceLayout.setHorizontalGroup(
+            jPanelUnderMaintenanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelUnderMaintenanceLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanelUnderMaintenanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanelHeaderUnderMainTenance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelImageUnderMainTenance, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(14, 14, 14))
+        );
+        jPanelUnderMaintenanceLayout.setVerticalGroup(
+            jPanelUnderMaintenanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelUnderMaintenanceLayout.createSequentialGroup()
+                .addComponent(jPanelHeaderUnderMainTenance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelImageUnderMainTenance, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE))
+        );
+
+    }
+    
+     private void UserView() {
+
+        jPanelUserView = new javax.swing.JPanel();
+        jPanelVerticalUserView = new javax.swing.JPanel();
+        jLabelImageUserView = new javax.swing.JLabel();
+        jSeparatorImageUserView = new javax.swing.JSeparator();
+        jPanelInfoAccountUserView = new javax.swing.JPanel();
+        jLabelInfoAccountUserView = new javax.swing.JLabel();
+        jPanelLikeUserView = new javax.swing.JPanel();
+        jLabelLikeUserView = new javax.swing.JLabel();
+        jPanelTransactionHistoryUserView = new javax.swing.JPanel();
+        jLabelTransactionHistoryUserView = new javax.swing.JLabel();
+        jLabelCloseBarUserView = new javax.swing.JLabel();
+        jPanelContainerUserView = new javax.swing.JPanel();
+        jPanelInforAccountMainUserView = new javax.swing.JPanel();
+        jLabelEmailUserView = new javax.swing.JLabel();
+        jLabelPasswordUserView = new javax.swing.JLabel();
+        jLabelInfoSignInUserView = new javax.swing.JLabel();
+        jLabelNameUserView = new javax.swing.JLabel();
+        jLabelGenderUserView = new javax.swing.JLabel();
+        jLabelBirthUserView = new javax.swing.JLabel();
+        jLabelJobUserView = new javax.swing.JLabel();
+        jButtonUpdateInfoUserView = new javax.swing.JButton();
+        jTextFieldPasswordUserView = new javax.swing.JTextField();
+        jTextFieldNameUserView = new javax.swing.JTextField();
+        jTextFieldEmailUserView = new javax.swing.JTextField();
+        jTextFieldBirthUserView = new javax.swing.JTextField();
+        jTextFieldGenderUserView = new javax.swing.JTextField();
+        jTextFieldJobUserView = new javax.swing.JTextField();
+        jSeparatorTextInfoSignInUserView = new javax.swing.JSeparator();
+        jPanelLikeMainUserView = new javax.swing.JPanel();
+        jLabelTextLikeUserView = new javax.swing.JLabel();
+        jScrollPaneLikeUserView = new javax.swing.JScrollPane();
+        jTextAreaLikeUserView = new javax.swing.JTextArea();
+        jSeparatorTextLikeUserView = new javax.swing.JSeparator();
+        jPanelTransactionHistoryMainUserView = new javax.swing.JPanel();
+        jScrollPaneBillView = new javax.swing.JScrollPane();
+        jTextAreaTransactionUserView = new javax.swing.JTextArea();
+        jLabelTextTransactionUserView = new javax.swing.JLabel();
+        jButtonDeleteHistoryOfTransactionHistoryUserView = new javax.swing.JButton();
+        jPanelHorizonMainUserView = new javax.swing.JPanel();
+        jLabelMenuUserView = new javax.swing.JLabel();
+        jButtonBackUserView = new javax.swing.JButton();
+        jLabelNameAppUserView = new javax.swing.JLabel();
+
+        jPanelUserView.setBackground(new java.awt.Color(255, 153, 51));
+
+        jPanelVerticalUserView.setBackground(new java.awt.Color(13, 36, 51));
+
+        jLabelImageUserView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-user.gif")); // NOI18N
+
+        jPanelInfoAccountUserView.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelInfoAccountUserView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                //jPanelInfoAccountUserViewMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                //jPanelInfoAccountUserViewMousePressed(evt);
+            }
+        });
+
+        jLabelInfoAccountUserView.setBackground(new java.awt.Color(13, 36, 51));
+        jLabelInfoAccountUserView.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabelInfoAccountUserView.setForeground(new java.awt.Color(102, 255, 0));
+        jLabelInfoAccountUserView.setText("            Thông tin tài khoản");
+        jLabelInfoAccountUserView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelInfoAccountUserViewMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelInfoAccountUserViewLayout = new javax.swing.GroupLayout(jPanelInfoAccountUserView);
+        jPanelInfoAccountUserView.setLayout(jPanelInfoAccountUserViewLayout);
+        jPanelInfoAccountUserViewLayout.setHorizontalGroup(
+            jPanelInfoAccountUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelInfoAccountUserView, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+        );
+        jPanelInfoAccountUserViewLayout.setVerticalGroup(
+            jPanelInfoAccountUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelInfoAccountUserView, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+        );
+
+        jPanelLikeUserView.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelLikeUserView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                //jPanelLikeUserViewMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                //jPanelLikeUserViewMousePressed(evt);
+            }
+        });
+
+        jLabelLikeUserView.setBackground(new java.awt.Color(13, 36, 51));
+        jLabelLikeUserView.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabelLikeUserView.setForeground(new java.awt.Color(255, 0, 51));
+        jLabelLikeUserView.setText("                    Yêu thích");
+        jLabelLikeUserView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelLikeUserViewMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelLikeUserViewLayout = new javax.swing.GroupLayout(jPanelLikeUserView);
+        jPanelLikeUserView.setLayout(jPanelLikeUserViewLayout);
+        jPanelLikeUserViewLayout.setHorizontalGroup(
+            jPanelLikeUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelLikeUserView, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanelLikeUserViewLayout.setVerticalGroup(
+            jPanelLikeUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelLikeUserView, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+        );
+
+        jPanelTransactionHistoryUserView.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelTransactionHistoryUserView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                //jPanelTransactionHistoryUserViewMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                //jPanelTransactionHistoryUserViewMousePressed(evt);
+            }
+        });
+
+        jLabelTransactionHistoryUserView.setBackground(new java.awt.Color(13, 36, 51));
+        jLabelTransactionHistoryUserView.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabelTransactionHistoryUserView.setForeground(new java.awt.Color(255, 153, 51));
+        jLabelTransactionHistoryUserView.setText("              Lịch sử giao dịch");
+        jLabelTransactionHistoryUserView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelTransactionHistoryUserViewMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelTransactionHistoryUserViewLayout = new javax.swing.GroupLayout(jPanelTransactionHistoryUserView);
+        jPanelTransactionHistoryUserView.setLayout(jPanelTransactionHistoryUserViewLayout);
+        jPanelTransactionHistoryUserViewLayout.setHorizontalGroup(
+            jPanelTransactionHistoryUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTransactionHistoryUserViewLayout.createSequentialGroup()
+                .addComponent(jLabelTransactionHistoryUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 20, Short.MAX_VALUE))
+        );
+        jPanelTransactionHistoryUserViewLayout.setVerticalGroup(
+            jPanelTransactionHistoryUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelTransactionHistoryUserView, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+        );
+
+        jLabelCloseBarUserView.setBackground(new java.awt.Color(13, 36, 51));
+        jLabelCloseBarUserView.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabelCloseBarUserView.setForeground(new java.awt.Color(0, 0, 255));
+        jLabelCloseBarUserView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-back-64.png"))); // NOI18N
+        jLabelCloseBarUserView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelCloseBarUserViewMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelVerticalUserViewLayout = new javax.swing.GroupLayout(jPanelVerticalUserView);
+        jPanelVerticalUserView.setLayout(jPanelVerticalUserViewLayout);
+        jPanelVerticalUserViewLayout.setHorizontalGroup(
+            jPanelVerticalUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jSeparatorImageUserView)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelVerticalUserViewLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabelImageUserView)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelCloseBarUserView))
+            .addGroup(jPanelVerticalUserViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelVerticalUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelLikeUserView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelVerticalUserViewLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jPanelTransactionHistoryUserView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelVerticalUserViewLayout.createSequentialGroup()
+                        .addComponent(jPanelInfoAccountUserView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanelVerticalUserViewLayout.setVerticalGroup(
+            jPanelVerticalUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelVerticalUserViewLayout.createSequentialGroup()
+                .addGroup(jPanelVerticalUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelVerticalUserViewLayout.createSequentialGroup()
+                        .addComponent(jLabelCloseBarUserView)
+                        .addGap(74, 74, 74))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelVerticalUserViewLayout.createSequentialGroup()
+                        .addComponent(jLabelImageUserView)
+                        .addGap(39, 39, 39)))
+                .addComponent(jSeparatorImageUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(jPanelInfoAccountUserView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(jPanelLikeUserView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(jPanelTransactionHistoryUserView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanelContainerUserView.setLayout(new java.awt.CardLayout());
+
+        jPanelInforAccountMainUserView.setBackground(new java.awt.Color(255, 204, 204));
+        jPanelInforAccountMainUserView.setForeground(new java.awt.Color(255, 204, 204));
+
+        jLabelEmailUserView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabelEmailUserView.setText("Email:");
+
+        jLabelPasswordUserView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabelPasswordUserView.setText("Mật khẩu:");
+
+        jLabelInfoSignInUserView.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabelInfoSignInUserView.setText("Thông tin đăng nhập");
+
+        jLabelNameUserView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabelNameUserView.setText("Tên:");
+
+        jLabelGenderUserView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabelGenderUserView.setText("Giới tính:");
+
+        jLabelBirthUserView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabelBirthUserView.setText("Ngày sinh:");
+
+        jLabelJobUserView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabelJobUserView.setText("Nghề nghiệp:");
+
+        jButtonUpdateInfoUserView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jButtonUpdateInfoUserView.setText("Cập nhật thông tin");
+        jButtonUpdateInfoUserView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonUpdateInfoUserViewActionPerformed(evt);
+            }
+        });
+
+        jTextFieldPasswordUserView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTextFieldPasswordUserView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                //jTextFieldPasswordUserViewActionPerformed(evt);
+            }
+        });
+
+        jTextFieldNameUserView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        jTextFieldEmailUserView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTextFieldEmailUserView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+               // jTextFieldEmailUserViewActionPerformed(evt);
+            }
+        });
+
+        jTextFieldBirthUserView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jTextFieldBirthUserView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                //jTextFieldBirthUserViewActionPerformed(evt);
+            }
+        });
+
+        jTextFieldGenderUserView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        jTextFieldJobUserView.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        jSeparatorTextInfoSignInUserView.setBackground(new java.awt.Color(0, 0, 0));
+
+        javax.swing.GroupLayout jPanelInforAccountMainUserViewLayout = new javax.swing.GroupLayout(jPanelInforAccountMainUserView);
+        jPanelInforAccountMainUserView.setLayout(jPanelInforAccountMainUserViewLayout);
+        jPanelInforAccountMainUserViewLayout.setHorizontalGroup(
+            jPanelInforAccountMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelInforAccountMainUserViewLayout.createSequentialGroup()
+                .addGap(319, 319, 319)
+                .addGroup(jPanelInforAccountMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabelInfoSignInUserView, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                    .addComponent(jSeparatorTextInfoSignInUserView))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInforAccountMainUserViewLayout.createSequentialGroup()
+                .addGap(251, 251, 251)
+                .addGroup(jPanelInforAccountMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelNameUserView, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelPasswordUserView, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelEmailUserView, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelBirthUserView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelGenderUserView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelJobUserView, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelInforAccountMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonUpdateInfoUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldPasswordUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldNameUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldEmailUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldBirthUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldGenderUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldJobUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(260, 260, 260))
+        );
+        jPanelInforAccountMainUserViewLayout.setVerticalGroup(
+            jPanelInforAccountMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelInforAccountMainUserViewLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabelInfoSignInUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparatorTextInfoSignInUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelInforAccountMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelEmailUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldEmailUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelInforAccountMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelPasswordUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldPasswordUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelInforAccountMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelNameUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldNameUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelInforAccountMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelGenderUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldGenderUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelInforAccountMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jTextFieldBirthUserView, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                    .addComponent(jLabelBirthUserView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelInforAccountMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldJobUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelJobUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButtonUpdateInfoUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanelContainerUserView.add(jPanelInforAccountMainUserView, "card2");
+
+        jPanelLikeMainUserView.setBackground(new java.awt.Color(153, 255, 204));
+
+        jLabelTextLikeUserView.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelTextLikeUserView.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabelTextLikeUserView.setText("Danh sách yêu thích");
+
+        jTextAreaLikeUserView.setColumns(20);
+        jTextAreaLikeUserView.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jTextAreaLikeUserView.setRows(5);
+        jScrollPaneLikeUserView.setViewportView(jTextAreaLikeUserView);
+
+        javax.swing.GroupLayout jPanelLikeMainUserViewLayout = new javax.swing.GroupLayout(jPanelLikeMainUserView);
+        jPanelLikeMainUserView.setLayout(jPanelLikeMainUserViewLayout);
+        jPanelLikeMainUserViewLayout.setHorizontalGroup(
+            jPanelLikeMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLikeMainUserViewLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPaneLikeUserView)
+                .addContainerGap())
+            .addGroup(jPanelLikeMainUserViewLayout.createSequentialGroup()
+                .addGap(320, 320, 320)
+                .addGroup(jPanelLikeMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabelTextLikeUserView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparatorTextLikeUserView))
+                .addContainerGap(338, Short.MAX_VALUE))
+        );
+        jPanelLikeMainUserViewLayout.setVerticalGroup(
+            jPanelLikeMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLikeMainUserViewLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jLabelTextLikeUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparatorTextLikeUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(jScrollPaneLikeUserView, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE))
+        );
+
+        jPanelContainerUserView.add(jPanelLikeMainUserView, "card3");
+
+        jPanelTransactionHistoryMainUserView.setBackground(new java.awt.Color(204, 204, 255));
+
+        jTextAreaTransactionUserView.setColumns(20);
+        jTextAreaTransactionUserView.setRows(5);
+        jScrollPaneBillView.setViewportView(jTextAreaTransactionUserView);
+
+        jLabelTextTransactionUserView.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelTextTransactionUserView.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabelTextTransactionUserView.setText("LỊCH SỬ GIAO DỊCH");
+
+        jButtonDeleteHistoryOfTransactionHistoryUserView.setBackground(new java.awt.Color(255, 51, 0));
+        jButtonDeleteHistoryOfTransactionHistoryUserView.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jButtonDeleteHistoryOfTransactionHistoryUserView.setText("Xóa lịch sử ");
+        jButtonDeleteHistoryOfTransactionHistoryUserView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                int n = JOptionPane.showConfirmDialog(Manager.jFrameMain,"Bạn có chắc chắn muốn xóa lịch sử thanh toán?","FastFood",JOptionPane.YES_NO_OPTION);
+                if (n == JOptionPane.YES_OPTION){
+                    jTextAreaTransactionUserView.setText("");
+                    for (SignUpModel account : signUpModel){
+                        if (account.getStatus().equals("online")){
+                            account.setHistoryOfBill("");
+                        }
+                    }
+                    writeAccountInToFile();
+                }
+            }
+        });
+
+        javax.swing.GroupLayout jPanelTransactionHistoryMainUserViewLayout = new javax.swing.GroupLayout(jPanelTransactionHistoryMainUserView);
+        jPanelTransactionHistoryMainUserView.setLayout(jPanelTransactionHistoryMainUserViewLayout);
+        jPanelTransactionHistoryMainUserViewLayout.setHorizontalGroup(
+            jPanelTransactionHistoryMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTransactionHistoryMainUserViewLayout.createSequentialGroup()
+                .addContainerGap(688, Short.MAX_VALUE)
+                .addGroup(jPanelTransactionHistoryMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTransactionHistoryMainUserViewLayout.createSequentialGroup()
+                        .addComponent(jLabelTextTransactionUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelTransactionHistoryMainUserViewLayout.createSequentialGroup()
+                        .addComponent(jButtonDeleteHistoryOfTransactionHistoryUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52))))
+            .addGroup(jPanelTransactionHistoryMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelTransactionHistoryMainUserViewLayout.createSequentialGroup()
+                    .addGap(228, 228, 228)
+                    .addComponent(jScrollPaneBillView, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+                    .addGap(228, 228, 228)))
+        );
+        jPanelTransactionHistoryMainUserViewLayout.setVerticalGroup(
+            jPanelTransactionHistoryMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTransactionHistoryMainUserViewLayout.createSequentialGroup()
+                .addGap(60, 60, 60)
+                .addComponent(jLabelTextTransactionUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57)
+                .addComponent(jButtonDeleteHistoryOfTransactionHistoryUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(329, Short.MAX_VALUE))
+            .addGroup(jPanelTransactionHistoryMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelTransactionHistoryMainUserViewLayout.createSequentialGroup()
+                    .addGap(28, 28, 28)
+                    .addComponent(jScrollPaneBillView, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(14, Short.MAX_VALUE)))
+        );
+
+        jPanelContainerUserView.add(jPanelTransactionHistoryMainUserView, "card5");
+
+        jPanelHorizonMainUserView.setBackground(new java.awt.Color(255, 153, 51));
+
+        jLabelMenuUserView.setIcon(new javax.swing.ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Image\\icons8-top-menu-48.png")); // NOI18N
+        jLabelMenuUserView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelMenuUserViewMouseClicked(evt);
+            }
+        });
+
+        jButtonBackUserView.setBackground(new java.awt.Color(255, 153, 51));
+        jButtonBackUserView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-close.gif"))); // NOI18N
+        jButtonBackUserView.setBorder(null);
+        jButtonBackUserView.addActionListener(new UserListener(this));
+
+        jLabelNameAppUserView.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabelNameAppUserView.setText(" FastFood");
+
+        javax.swing.GroupLayout jPanelHorizonMainUserViewLayout = new javax.swing.GroupLayout(jPanelHorizonMainUserView);
+        jPanelHorizonMainUserView.setLayout(jPanelHorizonMainUserViewLayout);
+        jPanelHorizonMainUserViewLayout.setHorizontalGroup(
+            jPanelHorizonMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelHorizonMainUserViewLayout.createSequentialGroup()
+                .addGap(100, 100, 100)
+                .addComponent(jLabelMenuUserView)
+                .addGap(190, 190, 190)
+                .addComponent(jLabelNameAppUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonBackUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanelHorizonMainUserViewLayout.setVerticalGroup(
+            jPanelHorizonMainUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelHorizonMainUserViewLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelNameAppUserView)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanelHorizonMainUserViewLayout.createSequentialGroup()
+                .addComponent(jButtonBackUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 11, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelHorizonMainUserViewLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabelMenuUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        javax.swing.GroupLayout jPanelUserViewLayout = new javax.swing.GroupLayout(jPanelUserView);
+        jPanelUserView.setLayout(jPanelUserViewLayout);
+        jPanelUserViewLayout.setHorizontalGroup(
+            jPanelUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelUserViewLayout.createSequentialGroup()
+                .addComponent(jPanelVerticalUserView, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addGroup(jPanelUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelContainerUserView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanelUserViewLayout.createSequentialGroup()
+                        .addComponent(jPanelHorizonMainUserView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
+        );
+        jPanelUserViewLayout.setVerticalGroup(
+            jPanelUserViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanelVerticalUserView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanelUserViewLayout.createSequentialGroup()
+                .addComponent(jPanelHorizonMainUserView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelContainerUserView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+    }  
+    
+    //Color for CartView
+    public static Color DefaultColorCartView,clickedColorCartView,DefaultColorBillView;
+    
+    private void jPanelInCashCartViewMousePressed(java.awt.event.MouseEvent evt) {                                                  
+        jPanelInCashCartView.setBackground(clickedColorCartView);
+        jPanelQRCartView.setBackground(DefaultColorCartView);
+        
+        jLabelWordCartView.setText("Thanh toán bằng tiền mặt");
+        jLabelImageCartView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-cash.gif")));
+    }                                                 
+
+    private void jPanelInCashCartViewMouseClicked(java.awt.event.MouseEvent evt) {                                                  
+        InCashCartView inCash = new InCashCartView();
+        jDesktopPanelCartView.removeAll();
+        jDesktopPanelCartView.add(inCash).setVisible(true);
+    }                                                 
+
+    private void jPanelQRCartViewMousePressed(java.awt.event.MouseEvent evt) {                                              
+        jPanelInCashCartView.setBackground(DefaultColorCartView);
+        jPanelQRCartView.setBackground(clickedColorCartView);
+
+        jLabelWordCartView.setText("Quét mã QR");
+        jLabelImageCartView.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Image/icons8-qr-code.gif")));
+    }                                             
+
+    private void jPanelQRCartViewMouseClicked(java.awt.event.MouseEvent evt) {                                              
+        QRCartView qr = new QRCartView();
+        jDesktopPanelCartView.removeAll();
+        jDesktopPanelCartView.add(qr).setVisible(true);
+    }
+        
     public static  List<SignUpModel> signUpModel = new ArrayList<>();
     private int id=0;  
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^((?!\\.)[\\w_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$", Pattern.CASE_INSENSITIVE);
@@ -4431,9 +6362,10 @@ public class Manager {
         }
         if (VALID_EMAIL_ADDRESS_REGEX.matcher(jTextFieldEmail.getText()).find() && VALID_PASSWORD_REGEX.matcher(jTextFieldPassWord.getText()).find() && VALID_FULLNAME_REGEX.matcher(jTextFieldFullName.getText()).find() && checkExistAccount==0){
             id++;
-            SignUpModel newAccount = new SignUpModel(id,jTextFieldFullName.getText(),jTextFieldEmail.getText(),jTextFieldPassWord.getText());
+            String status="offline";
+            SignUpModel newAccount = new SignUpModel(id,jTextFieldFullName.getText(),jTextFieldEmail.getText(),jTextFieldPassWord.getText(),status,"","","","","");
             signUpModel.add(newAccount);
-            System.out.print(newAccount);
+            //System.out.print(newAccount);
             JOptionPane.showMessageDialog(jFrameMain,"Đăng ký thành công!","Accept",JOptionPane.INFORMATION_MESSAGE);
         }
         else {
@@ -4464,7 +6396,7 @@ public class Manager {
             oos.flush();
             oos.close();
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
     public void writeAccountFromFile(){
@@ -4485,23 +6417,403 @@ public class Manager {
                     account = (SignUpModel) oj;
                     signUpModel.add(account);
                     id=account.getIdTrace();
-                    System.out.println(account);
+                    //System.out.println(account);
                 }
             }
             ois.close();
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
     public boolean loggedInSuccessfully() {
         for (SignUpModel account: signUpModel ){
-            System.out.print(textFieldEmailLogin.getText());
             char[] p = jPasswordField.getPassword();
             String password = new String(p);
             if (account.getEmail().equals(textFieldEmailLogin.getText()) && account.getPassWord().equals(password)){
+                jLabelHelloMainView.setText("Xin chào "+account.getFullName());
+                account.setStatus("online");
+                setUpInfoAccountInUserViewDefault();
+                System.out.println(account.getStatus());
                 return true;
             }
         }
         return false;
     } 
+    
+    //public static List<DiscountCodeModel> discountCode =  new ArrayList<>();
+    public static int countDiscountCodeView=0;
+    private void  getDataFromDiscountCodeView(){
+        // Duyệt qua từng hàng trong JTable
+        for (int i = 0; i < jTableBeerDiscountCodeView.getRowCount(); i++) {
+            String code = (String) jTableBeerDiscountCodeView.getValueAt(i, 1);
+            String discount = (String) jTableBeerDiscountCodeView.getValueAt(i, 2);
+            String minimumOrder = (String) jTableBeerDiscountCodeView.getValueAt(i, 3);
+            String expiry = (String) jTableBeerDiscountCodeView.getValueAt(i, 4);
+            try{
+                if (code.isEmpty()==false && !"null".equals(code)   ){
+                    countDiscountCodeView++;
+                    String name="";
+                    if (code.contains("BEC")) name="Bia";
+                    else if (code.contains("BRC")) name ="Bánh mì";
+                    else if (code.contains("BUC")) name ="Trà sữa";
+                    else if (code.contains("COC")) name ="Cà phê";
+                    else if (code.contains("HAC")) name ="Hamburger";
+                    else if (code.contains("HOC")) name ="Hotdog";
+                    else if (code.contains("KFC")) name ="Gà rán KFC";
+                    DiscountCodeModel item=  new DiscountCodeModel(countDiscountCodeView, name, code, discount, minimumOrder, expiry);
+                    discountCode.add(item);
+                }
+                else break;
+            }catch(Exception e){
+                //e.printStackTrace();
+            }
+        }
+        
+        for (int i = 0; i < jTableBreadDiscountCodeView.getRowCount(); i++) {
+            String code = (String) jTableBreadDiscountCodeView.getValueAt(i, 1);
+            String discount = (String) jTableBreadDiscountCodeView.getValueAt(i, 2);
+            String minimumOrder = (String) jTableBreadDiscountCodeView.getValueAt(i, 3);
+            String expiry = (String) jTableBreadDiscountCodeView.getValueAt(i, 4);
+            try{
+                if (code.isEmpty()==false && !"null".equals(code)   ){
+                    countDiscountCodeView++;
+                    String name="";
+                    if (code.contains("BEC")) name="Bia";
+                    else if (code.contains("BRC")) name ="Bánh mì";
+                    else if (code.contains("BUC")) name ="Trà sữa";
+                    else if (code.contains("COC")) name ="Cà phê";
+                    else if (code.contains("HAC")) name ="Hamburger";
+                    else if (code.contains("HOC")) name ="Hotdog";
+                    else if (code.contains("KFC")) name ="Gà rán KFC";
+                    DiscountCodeModel item=  new DiscountCodeModel(countDiscountCodeView, name, code, discount, minimumOrder, expiry);
+                    discountCode.add(item);
+                }
+                else break;
+            }catch(Exception e){
+                //e.printStackTrace();
+            }
+        }
+        for (int i = 0; i < jTableBubbleTeaDiscountCodeView.getRowCount(); i++) {
+            String code = (String) jTableBubbleTeaDiscountCodeView.getValueAt(i, 1);
+            String discount = (String) jTableBubbleTeaDiscountCodeView.getValueAt(i, 2);
+            String minimumOrder = (String) jTableBubbleTeaDiscountCodeView.getValueAt(i, 3);
+            String expiry = (String) jTableBubbleTeaDiscountCodeView.getValueAt(i, 4);
+            try{
+                if (code.isEmpty()==false && !"null".equals(code)   ){
+                    countDiscountCodeView++;
+                    String name="";
+                    if (code.contains("BEC")) name="Bia";
+                    else if (code.contains("BRC")) name ="Bánh mì";
+                    else if (code.contains("BUC")) name ="Trà sữa";
+                    else if (code.contains("COC")) name ="Cà phê";
+                    else if (code.contains("HAC")) name ="Hamburger";
+                    else if (code.contains("HOC")) name ="Hotdog";
+                    else if (code.contains("KFC")) name ="Gà rán KFC";
+                    DiscountCodeModel item=  new DiscountCodeModel(countDiscountCodeView, name, code, discount, minimumOrder, expiry);
+                    discountCode.add(item);
+                }
+                else break;
+            }catch(Exception e){
+                //e.printStackTrace();
+            }
+        }
+        for (int i = 0; i < jTableCoffeeDiscountCodeView.getRowCount(); i++) {
+            String code = (String) jTableCoffeeDiscountCodeView.getValueAt(i, 1);
+            String discount = (String) jTableCoffeeDiscountCodeView.getValueAt(i, 2);
+            String minimumOrder = (String) jTableCoffeeDiscountCodeView.getValueAt(i, 3);
+            String expiry = (String) jTableCoffeeDiscountCodeView.getValueAt(i, 4);
+            try{
+                if (code.isEmpty()==false && !"null".equals(code)){
+                    countDiscountCodeView++;
+                    String name="";
+                    if (code.contains("BEC")) name="Bia";
+                    else if (code.contains("BRC")) name ="Bánh mì";
+                    else if (code.contains("BUC")) name ="Trà sữa";
+                    else if (code.contains("COC")) name ="Cà phê";
+                    else if (code.contains("HAC")) name ="Hamburger";
+                    else if (code.contains("HOC")) name ="Hotdog";
+                    else if (code.contains("KFC")) name ="Gà rán KFC";
+                    DiscountCodeModel item=  new DiscountCodeModel(countDiscountCodeView, name, code, discount, minimumOrder, expiry);
+                    discountCode.add(item);
+                }
+                else break;
+            }catch(Exception e){
+                //e.printStackTrace();
+            }
+        }
+        for (int i = 0; i < jTableHamburgerDiscountCodeView.getRowCount(); i++) {
+            String code = (String) jTableHamburgerDiscountCodeView.getValueAt(i, 1);
+            String discount = (String) jTableHamburgerDiscountCodeView.getValueAt(i, 2);
+            String minimumOrder = (String) jTableHamburgerDiscountCodeView.getValueAt(i, 3);
+            String expiry = (String) jTableHamburgerDiscountCodeView.getValueAt(i, 4);
+            try{
+                if (code.isEmpty()==false && !"null".equals(code)){
+                    countDiscountCodeView++;
+                    String name="";
+                    if (code.contains("BEC")) name="Bia";
+                    else if (code.contains("BRC")) name ="Bánh mì";
+                    else if (code.contains("BUC")) name ="Trà sữa";
+                    else if (code.contains("COC")) name ="Cà phê";
+                    else if (code.contains("HAC")) name ="Hamburger";
+                    else if (code.contains("HOC")) name ="Hotdog";
+                    else if (code.contains("KFC")) name ="Gà rán KFC";
+                    DiscountCodeModel item=  new DiscountCodeModel(countDiscountCodeView, name, code, discount, minimumOrder, expiry);
+                    discountCode.add(item);
+                }
+                else break;
+            }catch(Exception e){
+                //e.printStackTrace();
+            }
+        }
+        for (int i = 0; i < jTableHotdogDiscountCodeView.getRowCount(); i++) {
+            String code = (String) jTableHotdogDiscountCodeView.getValueAt(i, 1);
+            String discount = (String) jTableHotdogDiscountCodeView.getValueAt(i, 2);
+            String minimumOrder = (String) jTableHotdogDiscountCodeView.getValueAt(i, 3);
+            String expiry = (String) jTableHotdogDiscountCodeView.getValueAt(i, 4);
+            try{
+                if (code.isEmpty()==false && !"null".equals(code)){
+                    countDiscountCodeView++;
+                    String name="";
+                    if (code.contains("BEC")) name="Bia";
+                    else if (code.contains("BRC")) name ="Bánh mì";
+                    else if (code.contains("BUC")) name ="Trà sữa";
+                    else if (code.contains("COC")) name ="Cà phê";
+                    else if (code.contains("HAC")) name ="Hamburger";
+                    else if (code.contains("HOC")) name ="Hotdog";
+                    else if (code.contains("KFC")) name ="Gà rán KFC";
+                    DiscountCodeModel item=  new DiscountCodeModel(countDiscountCodeView, name, code, discount, minimumOrder, expiry);
+                    discountCode.add(item);
+                }
+                else break;
+            }catch(Exception e){
+                //e.printStackTrace();
+            }
+        }
+        
+        for (int i = 0; i < jTableKFCDiscountCodeView.getRowCount(); i++) {
+            String code = (String) jTableKFCDiscountCodeView.getValueAt(i, 1);
+            String discount = (String) jTableKFCDiscountCodeView.getValueAt(i, 2);
+            String minimumOrder = (String) jTableKFCDiscountCodeView.getValueAt(i, 3);
+            String expiry = (String) jTableKFCDiscountCodeView.getValueAt(i, 4);
+            try{
+                if (code.isEmpty()==false && !"null".equals(code)){
+                    countDiscountCodeView++;
+                    String name="";
+                    if (code.contains("BEC")) name="Bia";
+                    else if (code.contains("BRC")) name ="Bánh mì";
+                    else if (code.contains("BUC")) name ="Trà sữa";
+                    else if (code.contains("COC")) name ="Cà phê";
+                    else if (code.contains("HAC")) name ="Hamburger";
+                    else if (code.contains("HOC")) name ="Hotdog";
+                    else if (code.contains("KFC")) name ="Gà rán KFC";
+                    DiscountCodeModel item=  new DiscountCodeModel(countDiscountCodeView, name, code, discount, minimumOrder, expiry);
+                    discountCode.add(item);
+                }
+                else break;
+            }catch(Exception e){
+                //e.printStackTrace();
+            }
+        }
+        
+    }
+    private void  uploadDataFromDiscountCodeView(){
+        int i=0;
+        for (DiscountCodeModel x: discountCode){
+            if (x.getName().isEmpty()==false ){
+                jTableTotalDiscountCodeView.setValueAt(x.getNumbericalOrder(), i, 0);
+                jTableTotalDiscountCodeView.setValueAt(x.getName(), i, 1);
+                jTableTotalDiscountCodeView.setValueAt(x.getCode(), i, 2);
+                jTableTotalDiscountCodeView.setValueAt(x.getDiscount(), i, 3);
+                jTableTotalDiscountCodeView.setValueAt(x.getMinimumOrder(), i, 4);
+                jTableTotalDiscountCodeView.setValueAt(x.getExpiry(), i, 5);
+                i++;
+            }
+        }
+    }
+       
+
+    private static String getTime="";
+    private static String getDate="";
+    int checkGet=0;
+    
+    public static String varUpdateTransactionQR="";
+    public static String varUpdateTransactionInCash="";
+    
+    public void setTime(){
+        new Thread(new Runnable(){
+            @Override
+            public void run(){
+                while (true){
+                    try{
+                        Thread.sleep(1000);
+                    }catch(InterruptedException ex){
+
+                    }
+                    Date date = new Date();
+                    SimpleDateFormat tf = new SimpleDateFormat("h:mm:ss aa");
+                    SimpleDateFormat df = new SimpleDateFormat("EEEE, dd-MM-yyyy");
+                    String time = tf.format(date);
+                    jLabelTimeBillView.setText(time.split(" ")[0]+" "+time.split(" ")[1]);
+                    jLabelDateBillView.setText(df.format(date));
+                    //if (checkGet == 0){
+                        getTime = tf.format(date);
+                        getDate= df.format(date);
+                        checkGet=1;
+                        jTextAreaCenterBillView.setText("                                                        FastFood\n"
+                                                       +"                                              CLB LẬP TRÌNH PTIT\n"
+                                                       +"                                            LẬP TRÌNH TỪ TRÁI TIM\n"
+                                                       +"                                                 Hotline:0369288612\n"
+                                                       +"                                                 PHIẾU TÍNH TIỀN\n"
+                                                       +"    Time: "+getTime+"     Date: "+getDate+"\n"
+                                                       +"    Description                                                                                VAT\n"
+                                                       +"    -------------------------------------------------------------------------------------------\n"
+                                                       +beerWriteBill
+                                                       +breadWriteBill
+                                                       +bubbleTeaWriteBill
+                                                       +coffeeWriteBill
+                                                       +hamburgerWriteBill
+                                                       +hotdogWriteBill
+                                                       +kfcWriteBill
+                                                       +pizzaWriteBill
+                                                       +footerBill
+                        );
+                        
+                    //}
+                    if (checkPayedorNotQR == 1){
+                        jTextAreaTransactionUserView.setText(jTextAreaTransactionUserView.getText()
+                                                    +varUpdateTransactionQR +"\n"
+                                                    +jTextAreaCenterBillView.getText()+"\n");
+                        checkPayedorNotQR =0;
+                        for (SignUpModel account : signUpModel){
+                            if (account.getStatus().equals("online")){
+                                account.setHistoryOfBill(jTextAreaTransactionUserView.getText());
+                            }
+                        }
+                        writeAccountInToFile();
+                    }
+                    if (checkPayedorNotInCash == 1){
+                        jTextAreaTransactionUserView.setText(jTextAreaTransactionUserView.getText()
+                                                    +varUpdateTransactionInCash +"\n"
+                                                    +jTextAreaCenterBillView.getText()+"\n");
+                        checkPayedorNotInCash =0;
+                        for (SignUpModel account : signUpModel){
+                            if (account.getStatus().equals("online")){
+                                account.setHistoryOfBill(jTextAreaTransactionUserView.getText());
+                            }
+                        }
+                        writeAccountInToFile();
+                    }
+                }
+            }
+        }).start();      
+    }
+    private void jLabelInfoAccountUserViewMouseClicked(java.awt.event.MouseEvent evt) {                                                       
+        // TODO add your handling code here:
+        jPanelInforAccountMainUserView.setVisible(true);
+        jPanelTransactionHistoryMainUserView.setVisible(false);
+        jPanelLikeMainUserView.setVisible(false);
+    }                                                      
+
+    private void jLabelLikeUserViewMouseClicked(java.awt.event.MouseEvent evt) {                                                
+        // TODO add your handling code here:
+        jPanelInforAccountMainUserView.setVisible(false);
+        jPanelTransactionHistoryMainUserView.setVisible(false);
+        jPanelLikeMainUserView.setVisible(true);
+    }                                               
+
+    private void jLabelTransactionHistoryUserViewMouseClicked(java.awt.event.MouseEvent evt) {                                                              
+        // TODO add your handling code here:
+        jPanelInforAccountMainUserView.setVisible(false);
+        jPanelTransactionHistoryMainUserView.setVisible(true);
+        jPanelLikeMainUserView.setVisible(false);
+    }   
+    int width = 206;
+    int height = 630;
+
+    private void openMenuBar() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < width; i++) {
+                    jPanelVerticalUserView.setSize(i, height);
+                    //mở từ từ
+                    try {
+                        Thread.sleep(2);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(UserView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    private void closeMenuBar() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = width; i > 0; i--) {
+                    jPanelVerticalUserView.setSize(i, height);
+                    // đóng từ từ
+                    try {
+                        Thread.sleep(2);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(UserView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }).start();
+    }
+    private void jLabelMenuUserViewMouseClicked(java.awt.event.MouseEvent evt) {                                                
+        openMenuBar();
+    }                                               
+
+    private void jLabelCloseBarUserViewMouseClicked(java.awt.event.MouseEvent evt) {                                                    
+        // TODO add your handling code here:
+        closeMenuBar();
+    }  
+    private void jButtonUpdateInfoUserViewActionPerformed(java.awt.event.ActionEvent evt) {           
+        if ( VALID_PASSWORD_REGEX.matcher(jTextFieldPasswordUserView.getText()).find() && VALID_FULLNAME_REGEX.matcher( jTextFieldNameUserView.getText()).find() ){
+            for (SignUpModel account : signUpModel){
+                if (account.getStatus().equals("online")){
+                    jTextFieldEmailUserView.setText(jTextFieldEmailUserView.getText());
+                    jTextFieldPasswordUserView.setText(jTextFieldPasswordUserView.getText());
+                    jTextFieldNameUserView.setText(jTextFieldNameUserView.getText());
+                    jTextFieldGenderUserView.setText(jTextFieldGenderUserView.getText());
+                    jTextFieldJobUserView.setText(jTextFieldJobUserView.getText());
+                    jTextFieldBirthUserView.setText(jTextFieldBirthUserView.getText());
+                    account.setGender( jTextFieldGenderUserView.getText());
+                    account.setJob(jTextFieldJobUserView.getText());
+                    account.setBirthDay(jTextFieldBirthUserView.getText());
+                    
+                }
+            }
+            JOptionPane.showMessageDialog(jFrameMain,"Cập nhật thông tin thành công!","Accept",JOptionPane.INFORMATION_MESSAGE);
+            writeAccountInToFile();
+        }
+        else {
+            if (VALID_FULLNAME_REGEX.matcher(jTextFieldNameUserView.getText()).find()==false){
+                JOptionPane.showMessageDialog(jFrameMain,"Sai định dạng tên!","Error",JOptionPane.ERROR_MESSAGE);
+            }  else if (VALID_PASSWORD_REGEX.matcher(jTextFieldPasswordUserView.getText()).find()==false){
+                JOptionPane.showMessageDialog(jFrameMain,"Sai định dạng mật khẩu!","Error",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } 
+    private void setUpInfoAccountInUserViewDefault(){
+        for (SignUpModel account : signUpModel){
+            try{
+                if (account.getStatus().equals("online")){
+                    jTextFieldEmailUserView.setText(account.getEmail());
+                    jTextFieldPasswordUserView.setText(account.getPassWord());
+                    jTextFieldNameUserView.setText(account.getFullName());
+                    jTextFieldGenderUserView.setText(account.getGender());
+                    jTextFieldJobUserView.setText(account.getJob());
+                    jTextFieldBirthUserView.setText(account.getBirthDay());
+                    jTextAreaLikeUserView.setText(account.getLikeShop());
+                    jTextAreaTransactionUserView.setText(account.getHistoryOfBill());
+                }
+            }catch(Exception e){
+                
+            }
+        }
+    }    
 }

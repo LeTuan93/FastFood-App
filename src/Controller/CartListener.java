@@ -1,34 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Controller;
 
+import View.InCashCartView;
 import View.Manager;
+import static View.Manager.jFrameMain;
+import View.QRCartView;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
-/**
- *
- * @author min
- */
 public class CartListener implements ActionListener{
 
-    public CartListener(){
-        
+    private Manager mng;
+    public CartListener(Manager mng){
+        this.mng = mng;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton clicked = (JButton) e.getSource();
-        if (clicked == Manager.jButtonCart){
-            //Manager.jPanel.setVisible(false);
-            Manager.jPanelMainView.setVisible(true);
-            Manager.jPanelMainView.setVisible(true);
-            Manager.jFrameMain.setSize(885, 650);
-            Manager.jFrameMain.getContentPane().setBackground(Color.WHITE);
-        }
+        if (clicked == mng.jButtonBackCartView){
+            mng.jPanelCartView.setVisible(false);
+            mng.jPanelMainView.setVisible(true);
+            mng.jFrameMain.setSize(885, 650);
+            mng.jFrameMain.getContentPane().setBackground(Color.WHITE);
+        } 
     }
     
 }

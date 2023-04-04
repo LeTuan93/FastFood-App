@@ -1,6 +1,8 @@
 package Test;
 
+import View.MainView;
 import View.Manager;
+import static View.Manager.jFrameMain;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -53,7 +55,6 @@ public class Test {
     public static void main(String[] args) {
         initLookAndFeel();
         JFrame.setDefaultLookAndFeelDecorated(true);
-        new Manager();
-        
+        new Manager();     
     }
 }

@@ -4,7 +4,7 @@ import Model.SignUpModel;
 import View.MainView;
 import View.Manager;
 import static View.Manager.checkSignInFromSignUp;
-import static View.Manager.jFrameMain;
+import static View.Manager.jLabelHelloMainView;
 import static View.Manager.jPanelDealHotTodayView;
 import static View.Manager.jPanelKFCView;
 import static View.Manager.jPanelMainView;
@@ -17,6 +17,8 @@ import View.SignUpGUI;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class SignInGUIListener implements ActionListener{
@@ -36,6 +38,7 @@ public class SignInGUIListener implements ActionListener{
                 mng.jFrameMain.setSize(885, 650);
             }
             else{
+                //Icon icon = new ImageIcon("C:\\Users\\min\\Documents\\NetBeansProjects\\tester\\src\\Imageicons8-box-important.gif");
                 JOptionPane.showMessageDialog(mng.jFrameMain,"Thông tin đăng nhập sai hoặc không tồn tại!","Error",JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -45,11 +48,11 @@ public class SignInGUIListener implements ActionListener{
         else if (find.equals("Sign up here")){
             jPanelSignInGUI.setVisible(false);
             if (checkSignInFromSignUp==1){ 
-                jFrameMain.add(jPanelSignUpGUI);
+                mng.jFrameMain.add(jPanelSignUpGUI);
                 System.out.println("x");
                 checkSignInFromSignUp=2;
             }
-            jFrameMain.setSize(870, 520);
+            mng.jFrameMain.setSize(870, 520);
             jPanelSignUpGUI.setVisible(true);
         }
     }

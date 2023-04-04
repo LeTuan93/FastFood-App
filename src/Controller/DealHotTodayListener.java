@@ -25,7 +25,6 @@ public class DealHotTodayListener implements ActionListener{
         if (clicked == Manager.jButtonBackDealHotTodayView){
             Manager.jPanelDealHotTodayView.setVisible(false);
             Manager.jPanelMainView.setVisible(true);
-            Manager.jPanelMainView.setVisible(true);
             Manager.jFrameMain.setSize(885, 650);
             Manager.jFrameMain.getContentPane().setBackground(Color.WHITE);
         }
